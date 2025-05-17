@@ -1,4 +1,4 @@
-package com.example.projetmobile.model
+package com.example.projetmobile.data.Entities
 
 data class Product(
     val id: String,

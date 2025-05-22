@@ -9,7 +9,10 @@ import androidx.compose.material3.Surface
 import com.example.projetmobile.ui.product.ProductViewModel
 import com.example.projetmobile.nav.AppNavigation
 import com.example.projetmobile.ui.theme.ProjetMobileTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val viewModel: ProductViewModel by viewModels<ProductViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -2,9 +2,9 @@ package com.example.projetmobile.data.Repository
 
 import com.example.projetmobile.R
 import com.example.projetmobile.data.Entities.Product
-import kotlinx.coroutines.delay
+import jakarta.inject.Inject
 
-class ProductRepository
+class ProductRepository @Inject constructor()
 {
     private val products = listOf(
         Product("1", "Clavier", 150.00, 0, R.drawable.clavier),

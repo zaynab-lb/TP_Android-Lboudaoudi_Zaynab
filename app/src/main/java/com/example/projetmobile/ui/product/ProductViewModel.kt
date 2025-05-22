@@ -4,15 +4,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.projetmobile.data.Entities.Product
 import com.example.projetmobile.data.Repository.ProductRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import jakarta.inject.Inject
 
-class ProductViewModel : ViewModel()
+@HiltViewModel
+class ProductViewModel @Inject constructor( private val repository: ProductRepository) : ViewModel()
 {
     private val _state = MutableStateFlow(ProductViewState())
     val state: StateFlow<ProductViewState> = _state
-    val repository: ProductRepository = ProductRepository()
+    //val repository: ProductRepository = ProductRepository()
 
     fun handleIntent(intent: ProductIntent) {
         when (intent) {

@@ -1,0 +1,37 @@
+[
+  {
+    "productID": "1",
+    "productTitle": "Clavier",
+    "productPrice": 150.99 ,
+    "productQuantity": 0,
+    "productImageRes": "clavier.jpeg"
+  },
+  {
+    "productID": "2",
+    "productTitle": "Souris",
+    "productPrice": 75.00 ,
+    "productQuantity": 20,
+    "productImageRes": "souris.jpeg"
+  },
+  {
+    "productID": "3",
+    "productTitle": "Ecran",
+    "productPrice": 7500.00 ,
+    "productQuantity": 7,
+    "productImageRes": "ecran.jpeg"
+  },
+  {
+    "productID": "4",
+    "productTitle": "PC Portable",
+    "productPrice": 6999.99 ,
+    "productQuantity": 50,
+    "productImageRes": "pc.jpeg"
+  },
+  {
+    "productID": "5",
+    "productTitle": "Tapis",
+    "productPrice": 59.99 ,
+    "productQuantity": 200,
+    "productImageRes": "tapis.jpeg"
+  }
+]

@@ -1,5 +1,7 @@
 package com.example.projetmobile.data.Entities
 
+import android.R
+import androidx.annotation.DrawableRes
 import com.google.gson.annotations.SerializedName
 
 data class Product(

@@ -7,13 +7,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.projetmobile.data.Entities.Product
 
 @Composable
-fun DetailsScreen(product : Product, navController: NavController)
+fun DetailsScreen(product: Product, navController: NavController)
 {
     Column(
     modifier = Modifier
@@ -31,7 +30,7 @@ fun DetailsScreen(product : Product, navController: NavController)
     Spacer(modifier = Modifier.height(24.dp))
 
     Text(
-        text = product.title,
+        text = product.title.toString(),
         style = MaterialTheme.typography.headlineMedium
     )
 

@@ -31,4 +31,7 @@ class ProductRepository @Inject constructor(private val api : ProductApi)
         return products
     }
 
+    suspend fun getProductById(id: String): Product? {
+        return api.getProducts().find { it.id == id }
+    }
 }

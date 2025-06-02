@@ -33,7 +33,7 @@ fun ProductItem(product: Product, onDetailsClick: () -> Unit) {
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = product.title,
+                    text = product.title.toString(),
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(

@@ -27,7 +27,7 @@ class ProductViewModel @Inject constructor( private val repository: ProductRepos
         }
     }
 
-    private fun loadProducts() {
+    private suspend fun loadProducts() {
         _state.value = _state.value.copy(isLoading = true, error = null)
         try {
             val products = repository.getProducts()
@@ -39,11 +39,26 @@ class ProductViewModel @Inject constructor( private val repository: ProductRepos
     }
 
 
-    fun getProductById(productId: String): Product? {
+    /*fun getProductById(productId: String): Product? {
         return repository.getProductById(productId)
+    }*/
+
+    fun getProductById(productId: String, onResult: (Product?) -> Unit) {
+        viewModelScope.launch {
+            val product = repository.getProductById(productId)
+            onResult(product)
+        }
     }
 
-    fun getAllProducts(): List<Product> {
+    /*fun getAllProducts(): List<Product> {
         return repository.getProducts()
+    }*/
+
+    fun getAllProducts(onResult: (List<Product>) -> Unit) {
+        viewModelScope.launch {
+            val products = repository.getProducts()
+            onResult(products)
+        }
     }
+
 }

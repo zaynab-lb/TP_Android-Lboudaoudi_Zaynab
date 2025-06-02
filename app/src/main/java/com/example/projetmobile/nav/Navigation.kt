@@ -53,10 +53,7 @@ fun AppNavigation(viewModel: ProductViewModel) {
             }
 
 
-            //val product = viewModel.getProductById(productId)
-            /*if (product != null) {
-                DetailsScreen(product = product, navController = navController)
-            }*/
+
 
             when {
                 isLoading -> {

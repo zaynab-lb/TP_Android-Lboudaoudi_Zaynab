@@ -4,34 +4,34 @@
     "productTitle": "Clavier",
     "productPrice": 150.99 ,
     "productQuantity": 0,
-    "productImageRes": "clavier.jpeg"
+    "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/master/app/public/images/clavier.jpeg"
   },
   {
     "productID": "2",
     "productTitle": "Souris",
     "productPrice": 75.00 ,
     "productQuantity": 20,
-    "productImageRes": "souris.jpeg"
+    "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/master/app/public/images/souris.jpeg"
   },
   {
     "productID": "3",
     "productTitle": "Ecran",
     "productPrice": 7500.00 ,
     "productQuantity": 7,
-    "productImageRes": "ecran.jpeg"
+    "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/master/app/public/images/ecran.jpeg"
   },
   {
     "productID": "4",
     "productTitle": "PC Portable",
     "productPrice": 6999.99 ,
     "productQuantity": 50,
-    "productImageRes": "pc.jpeg"
+    "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/master/app/public/images/pc.jpeg"
   },
   {
     "productID": "5",
     "productTitle": "Tapis",
     "productPrice": 59.99 ,
     "productQuantity": 200,
-    "productImageRes": "tapis.jpeg"
+    "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/master/app/public/images/tapis.jpeg"
   }
 ]

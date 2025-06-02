@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.projetmobile.data.Entities.Product
 
 @Composable
@@ -22,7 +23,8 @@ fun DetailsScreen(product: Product, navController: NavController)
     )
     {
     Image(
-        painter = painterResource(id = product.imageRes),
+        //painter = painterResource(id = product.imageRes),
+        painter = rememberAsyncImagePainter(model = product.imageRes),
         contentDescription = product.title,
         modifier = Modifier.size(200.dp)
     )

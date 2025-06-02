@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.example.projetmobile.data.Entities.Product
 
 @Composable
@@ -23,8 +24,10 @@ fun ProductItem(product: Product, onDetailsClick: () -> Unit) {
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            //val imageUrl = "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/master/app/public/images/clavier.jpeg"
             Image(
-                painter = painterResource(id = product.imageRes),
+               // painter = painterResource(id = product.imageRes),
+                painter = rememberAsyncImagePainter(model = product.imageRes),
                 contentDescription = product.title,
                 modifier = Modifier.size(64.dp)
             )

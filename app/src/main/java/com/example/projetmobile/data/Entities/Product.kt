@@ -1,7 +1,6 @@
 package com.example.projetmobile.data.Entities
 
-import android.R
-import androidx.annotation.DrawableRes
+
 import com.google.gson.annotations.SerializedName
 
 data class Product(
@@ -14,5 +13,5 @@ data class Product(
     @SerializedName("productQuantity")
     val quantity: Int,
     @SerializedName("productImageRes")
-    val imageRes: Int
+    val imageRes: String
 )

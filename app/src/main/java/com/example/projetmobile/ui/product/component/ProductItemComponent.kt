@@ -40,7 +40,12 @@ fun ProductItem(product: Product, onDetailsClick: () -> Unit) {
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
-                    text = "${product.price} €",
+                    text = product.category ?: "",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+                Text(
+                    text = "${product.price} DH",
                     style = MaterialTheme.typography.bodyLarge
                 )
 

@@ -12,6 +12,10 @@ data class Product(
     val price: Double,
     @SerializedName("productQuantity")
     val quantity: Int,
+    @SerializedName("productCategory")
+    val category: String? = null,
+    @SerializedName("productDescription")
+    val description: String? = null,
     @SerializedName("productImageRes")
     val imageRes: String
 )

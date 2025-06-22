@@ -4,6 +4,8 @@
     "productTitle": "Robe d'été fleurie",
     "productPrice": 350 ,
     "productQuantity": 0,
+    "productCategory": "Vêtements",
+    "productDescription": "Une robe légère parfaite pour l'été avec un imprimé fleuri tendance",
     "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/main/app/public/image/robe-fleurie.jpeg"
   },
   {
@@ -11,6 +13,8 @@
     "productTitle": "T-shirt oversize",
     "productPrice": 120 ,
     "productQuantity": 44,
+    "productCategory": "Vêtements",
+    "productDescription": "T-shirt oversize en coton doux, coupe ample et style décontracté idéal au quotidien",
     "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/main/app/public/image/t-shirt-oversize.jpg"
   },
   {
@@ -18,6 +22,8 @@
     "productTitle": "Baskets blanches",
     "productPrice": 400 ,
     "productQuantity": 15,
+    "productCategory": "Chaussures",
+    "productDescription": "Confortables et tendance",
     "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/main/app/public/image/bascket-blanche.jpg"
   },
   {
@@ -25,6 +31,8 @@
     "productTitle": "Casquette streetwear",
     "productPrice": 90 ,
     "productQuantity": 30,
+    "productCategory": " Accessoires",
+    "productDescription": "Casquette ajustable avec logo brodé",
     "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/main/app/public/image/casquette-streetwear.jpg"
   },
   {
@@ -32,6 +40,8 @@
     "productTitle": "Ceinture en cuir",
     "productPrice": 130 ,
     "productQuantity": 50,
+    "productCategory": " Accessoires",
+    "productDescription": "Boucle métal, plusieurs tailles",
     "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/main/app/public/image/ceinture-cuir.jpg"
   },
   {
@@ -39,6 +49,8 @@
     "productTitle": "Sac à main en simili cuir",
     "productPrice": 220 ,
     "productQuantity": 60,
+    "productCategory": "Sacs",
+    "productDescription": "Petite taille, couleur marron",
     "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/main/app/public/image/sac-main-cuir.jpeg"
   },
   {
@@ -46,6 +58,8 @@
     "productTitle": "Sac à dos vintage",
     "productPrice": 350 ,
     "productQuantity": 7,
+    "productCategory": "Sacs",
+    "productDescription": "Toile et cuir, compartiments laptop",
     "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/main/app/public/image/sac-dos-vintage.jpg"
   },
   {
@@ -53,6 +67,8 @@
     "productTitle": "Collier doré simple",
     "productPrice": 80 ,
     "productQuantity": 5,
+    "productCategory": " Bijoux",
+    "productDescription": "Acier inoxydable, résistant à l'eau",
     "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/main/app/public/image/collier-doré-simple.jpg"
   },
   {
@@ -60,6 +76,8 @@
     "productTitle": "Bracelet perles naturelles",
     "productPrice": 110 ,
     "productQuantity": 80,
+    "productCategory": " Bijoux",
+    "productDescription": "Fait main, avec pierres semi-précieuses",
     "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/main/app/public/image/Bracelet-perles-naturelles.jpeg"
   },
   {
@@ -67,6 +85,8 @@
     "productTitle": "Sandales en cuir",
     "productPrice": 290 ,
     "productQuantity": 32,
+    "productCategory": "Chaussures",
+    "productDescription": "Fabriquées à la main, style marocain",
     "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/main/app/public/image/sandale-en-cuir.jpg"
   }
 ]

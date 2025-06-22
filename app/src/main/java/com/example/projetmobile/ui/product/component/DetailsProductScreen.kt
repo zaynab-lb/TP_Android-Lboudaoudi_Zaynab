@@ -38,12 +38,37 @@ fun DetailsScreen(product: Product, navController: NavController)
 
     Spacer(modifier = Modifier.height(8.dp))
 
+        Text(
+            text = "Catégorie: ${product.category}",
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.secondary
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
     Text(
-        text = "Prix: ${product.price} €",
+        text = "Prix: ${product.price} DH",
         style = MaterialTheme.typography.titleLarge
     )
 
     Spacer(modifier = Modifier.height(8.dp))
+
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.Start
+        ) {
+            Text(
+                text = "Description:",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+            Text(
+                text = product.description ?: "Aucune description disponible",
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
 
     // Affichage détaillé du stock
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -88,6 +113,7 @@ fun DetailsScreen(product: Product, navController: NavController)
             }
         }
     }
+
 
     Spacer(modifier = Modifier.height(8.dp))
 

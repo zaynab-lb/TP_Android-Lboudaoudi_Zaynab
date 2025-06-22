@@ -15,7 +15,8 @@ class ProductViewModel @Inject constructor( private val repository: ProductRepos
 {
     private val _state = MutableStateFlow(ProductViewState())
     val state: StateFlow<ProductViewState> = _state
-    //val repository: ProductRepository = ProductRepository()
+
+    private var allProducts: List<Product> = emptyList()
 
     fun handleIntent(intent: ProductIntent) {
         when (intent) {
@@ -24,24 +25,37 @@ class ProductViewModel @Inject constructor( private val repository: ProductRepos
                     loadProducts()
                 }
             }
+            is ProductIntent.FilterByCategory -> {
+                filterByCategory(intent.category)
+            }
         }
     }
 
     private suspend fun loadProducts() {
         _state.value = _state.value.copy(isLoading = true, error = null)
         try {
-            val products = repository.getProducts()
-            _state.value = ProductViewState(isLoading = false, products = products)
+            allProducts = repository.getProducts()
+            _state.value = ProductViewState(
+                isLoading = false,
+                products = allProducts,
+                categories = allProducts.map { it.category }.distinct().filterNotNull()
+            )
         } catch (e: Exception) {
             _state.value =
                 ProductViewState(isLoading = false, error = e.message ?: "Error fetching products")
         }
     }
 
-
-    /*fun getProductById(productId: String): Product? {
-        return repository.getProductById(productId)
-    }*/
+    private fun filterByCategory(category: String?) {
+        _state.value = if (category == null) {
+            _state.value.copy(products = allProducts, selectedCategory = null)
+        } else {
+            _state.value.copy(
+                products = allProducts.filter { it.category == category },
+                selectedCategory = category
+            )
+        }
+    }
 
     fun getProductById(productId: String, onResult: (Product?) -> Unit) {
         viewModelScope.launch {
@@ -49,10 +63,6 @@ class ProductViewModel @Inject constructor( private val repository: ProductRepos
             onResult(product)
         }
     }
-
-    /*fun getAllProducts(): List<Product> {
-        return repository.getProducts()
-    }*/
 
     fun getAllProducts(onResult: (List<Product>) -> Unit) {
         viewModelScope.launch {

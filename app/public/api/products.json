@@ -31,7 +31,7 @@
     "productTitle": "Casquette streetwear",
     "productPrice": 90 ,
     "productQuantity": 30,
-    "productCategory": " Accessoires",
+    "productCategory": "Accessoires",
     "productDescription": "Casquette ajustable avec logo brodé",
     "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/main/app/public/image/casquette-streetwear.jpg"
   },
@@ -40,7 +40,7 @@
     "productTitle": "Ceinture en cuir",
     "productPrice": 130 ,
     "productQuantity": 50,
-    "productCategory": " Accessoires",
+    "productCategory": "Accessoires",
     "productDescription": "Boucle métal, plusieurs tailles",
     "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/main/app/public/image/ceinture-cuir.jpg"
   },
@@ -67,7 +67,7 @@
     "productTitle": "Collier doré simple",
     "productPrice": 80 ,
     "productQuantity": 5,
-    "productCategory": " Bijoux",
+    "productCategory": "Bijoux",
     "productDescription": "Acier inoxydable, résistant à l'eau",
     "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/main/app/public/image/collier-doré-simple.jpg"
   },
@@ -76,7 +76,7 @@
     "productTitle": "Bracelet perles naturelles",
     "productPrice": 110 ,
     "productQuantity": 80,
-    "productCategory": " Bijoux",
+    "productCategory": "Bijoux",
     "productDescription": "Fait main, avec pierres semi-précieuses",
     "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/main/app/public/image/Bracelet-perles-naturelles.jpeg"
   },

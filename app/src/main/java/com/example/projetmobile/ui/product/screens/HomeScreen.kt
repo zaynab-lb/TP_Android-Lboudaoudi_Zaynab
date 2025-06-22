@@ -1,9 +1,15 @@
 package com.example.projetmobile.ui.product.screens
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -32,6 +38,17 @@ fun HomeScreen(viewModel: ProductViewModel = viewModel(), onNavigateToDetails: (
             .fillMaxSize()
             .padding(16.dp)
     ) {
+        // Filtres par catégorie
+        CategoryFilter(
+            categories = state.categories,
+            selectedCategory = state.selectedCategory,
+            onCategorySelected = { category ->
+                viewModel.handleIntent(ProductIntent.FilterByCategory(category))
+            }
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         when {
             state.isLoading -> {
                 // Display a Circular loader
@@ -46,6 +63,38 @@ fun HomeScreen(viewModel: ProductViewModel = viewModel(), onNavigateToDetails: (
             else -> {
                 // Display products when fetch is success
                 ProductsList(products = state.products, onNavigateToDetails)
+            }
+        }
+    }
+}
+
+@Composable
+fun CategoryFilter(
+    categories: List<String>,
+    selectedCategory: String?,
+    onCategorySelected: (String?) -> Unit
+) {
+    Column {
+        Spacer(modifier = Modifier.height(8.dp))
+        LazyRow {
+            item {
+                Row {
+                    FilterChip(
+                        selected = selectedCategory == null,
+                        onClick = { onCategorySelected(null) },
+                        label = { Text("Tous") }
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    categories.forEach { category ->
+                        FilterChip(
+                            selected = selectedCategory == category,
+                            onClick = { onCategorySelected(category) },
+                            label = { Text(category) },
+                            modifier = Modifier.padding(end = 8.dp)
+                        )
+                    }
+                }
             }
         }
     }

@@ -4,6 +4,6 @@ import com.example.projetmobile.data.Entities.Product
 import retrofit2.http.GET
 
 interface ProductApi {
-    @GET("product.json")
+    @GET("products.json")
     suspend fun getProducts(): List<Product>
 }

@@ -1,0 +1,72 @@
+[
+  {
+    "productID": "1",
+    "productTitle": "Robe d'été fleurie",
+    "productPrice": 350 ,
+    "productQuantity": 0,
+    "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/main/app/public/image/robe-fleurie.jpeg"
+  },
+  {
+    "productID": "2",
+    "productTitle": "T-shirt oversize",
+    "productPrice": 120 ,
+    "productQuantity": 44,
+    "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/main/app/public/image/t-shirt-oversize.jpg"
+  },
+  {
+    "productID": "3",
+    "productTitle": "Baskets blanches",
+    "productPrice": 400 ,
+    "productQuantity": 15,
+    "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/main/app/public/image/bascket-blanche.jpg"
+  },
+  {
+    "productID": "4",
+    "productTitle": "Casquette streetwear",
+    "productPrice": 90 ,
+    "productQuantity": 30,
+    "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/main/app/public/image/casquette-streetwear.jpg"
+  },
+  {
+    "productID": "5",
+    "productTitle": "Ceinture en cuir",
+    "productPrice": 130 ,
+    "productQuantity": 50,
+    "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/main/app/public/image/ceinture-cuir.jpg"
+  },
+  {
+    "productID": "6",
+    "productTitle": "Sac à main en simili cuir",
+    "productPrice": 220 ,
+    "productQuantity": 60,
+    "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/main/app/public/image/sac-main-cuir.jpeg"
+  },
+  {
+    "productID": "7",
+    "productTitle": "Sac à dos vintage",
+    "productPrice": 350 ,
+    "productQuantity": 7,
+    "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/main/app/public/image/sac-dos-vintage.jpg"
+  },
+  {
+    "productID": "8",
+    "productTitle": "Collier doré simple",
+    "productPrice": 80 ,
+    "productQuantity": 5,
+    "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/main/app/public/image/collier-doré-simple.jpg"
+  },
+  {
+    "productID": "9",
+    "productTitle": "Bracelet perles naturelles",
+    "productPrice": 110 ,
+    "productQuantity": 80,
+    "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/main/app/public/image/Bracelet-perles-naturelles.jpeg"
+  },
+  {
+    "productID": "10",
+    "productTitle": "Sandales en cuir",
+    "productPrice": 290 ,
+    "productQuantity": 32,
+    "productImageRes": "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/main/app/public/image/sandale-en-cuir.jpg"
+  }
+]

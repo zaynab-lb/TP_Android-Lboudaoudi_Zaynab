@@ -1,15 +1,20 @@
 package com.example.projetmobile.ui.product.screens
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -25,7 +30,11 @@ import com.example.projetmobile.ui.product.ProductIntent
 import com.example.projetmobile.ui.product.component.ProductsList
 
 @Composable
-fun HomeScreen(viewModel: ProductViewModel = viewModel(), onNavigateToDetails: (String) -> Unit) {
+fun HomeScreen(
+    viewModel: ProductViewModel = viewModel(),
+    onNavigateToDetails: (String) -> Unit,
+    onLogout: () -> Unit
+) {
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(viewModel) {
@@ -37,7 +46,27 @@ fun HomeScreen(viewModel: ProductViewModel = viewModel(), onNavigateToDetails: (
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
-    ) {
+    )
+    {
+
+        // Ajout de la Row pour le bouton de déconnexion
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
+        ) {
+            Button(
+                onClick = onLogout,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.errorContainer,
+                    contentColor = MaterialTheme.colorScheme.error
+                )
+            ) {
+                Text("Déconnexion")
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         // Filtres par catégorie
         CategoryFilter(
             categories = state.categories,

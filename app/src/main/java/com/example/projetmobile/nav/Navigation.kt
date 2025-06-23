@@ -17,24 +17,57 @@ import com.example.projetmobile.data.Entities.Product
 import com.example.projetmobile.ui.product.ProductViewModel
 import com.example.projetmobile.ui.product.component.DetailsScreen
 import com.example.projetmobile.ui.product.screens.HomeScreen
+import com.example.projetmobile.ui.user.AuthIntent
+import com.example.projetmobile.ui.user.AuthViewModel
+import com.example.projetmobile.ui.user.screens.AdminHomeScreen
+import com.example.projetmobile.ui.user.screens.LoginScreen
 
 object Routes {
     const val Home = "home"
+    const val Login = "login"
+    const val AdminHome = "adminHome"
+    const val ClientHome = "clientHome"
     const val ProductDetails = "productDetails"
 }
 @Composable
-fun AppNavigation(viewModel: ProductViewModel) {
+fun AppNavigation(authViewModel: AuthViewModel, productViewModel: ProductViewModel) {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = Routes.Home) {
-        composable(Routes.Home) {
-            HomeScreen(
-                viewModel = viewModel,
-                onNavigateToDetails = { productId ->
-                    navController.navigate("${Routes.ProductDetails}/$productId")
+    NavHost(navController = navController, startDestination = "login") {
+        composable("login") {
+            LoginScreen(
+                viewModel = authViewModel,
+                navController = navController
+            )
+        }
+        composable(Routes.AdminHome) {
+            AdminHomeScreen(
+                navController = navController,
+                onLogout = {
+                    authViewModel.handleIntent(AuthIntent.Logout)
+                    navController.navigate(Routes.Login) {
+                        popUpTo(0) // Clear back stack
+                    }
                 }
             )
         }
+
+        composable(Routes.ClientHome) {
+            HomeScreen(
+                viewModel = productViewModel,
+                onNavigateToDetails = { productId ->
+                    navController.navigate("${Routes.ProductDetails}/$productId")
+                },
+                onLogout = {
+                    authViewModel.handleIntent(AuthIntent.Logout)
+                    navController.navigate(Routes.Login) {
+                        popUpTo(0) // Clear back stack
+                    }
+                }
+            )
+        }
+
+
 
         composable(
             "${Routes.ProductDetails}/{productId}",
@@ -46,7 +79,7 @@ fun AppNavigation(viewModel: ProductViewModel) {
 
             LaunchedEffect(productId) {
                 isLoading = true
-                viewModel.getProductById(productId) { result ->
+                productViewModel.getProductById(productId) { result ->
                     product = result
                     isLoading = false
                 }

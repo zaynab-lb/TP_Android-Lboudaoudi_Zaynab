@@ -69,6 +69,14 @@ fun LoginScreen(
             Text("Se connecter")
         }
 
+        Spacer(modifier = Modifier.height(16.dp))
+
+        TextButton(
+            onClick = { navController.navigate("register") }
+        ) {
+            Text("Pas encore de compte ? S'inscrire")
+        }
+
         if (state.error != null) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(

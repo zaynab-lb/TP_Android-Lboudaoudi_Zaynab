@@ -21,6 +21,7 @@ import com.example.projetmobile.ui.user.AuthIntent
 import com.example.projetmobile.ui.user.AuthViewModel
 import com.example.projetmobile.ui.user.screens.AdminHomeScreen
 import com.example.projetmobile.ui.user.screens.LoginScreen
+import com.example.projetmobile.ui.user.screens.RegisterScreen
 
 object Routes {
     const val Home = "home"
@@ -36,6 +37,13 @@ fun AppNavigation(authViewModel: AuthViewModel, productViewModel: ProductViewMod
     NavHost(navController = navController, startDestination = "login") {
         composable("login") {
             LoginScreen(
+                viewModel = authViewModel,
+                navController = navController
+            )
+        }
+
+        composable("register") {
+            RegisterScreen(
                 viewModel = authViewModel,
                 navController = navController
             )

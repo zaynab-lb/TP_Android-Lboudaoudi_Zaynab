@@ -17,11 +17,6 @@ import com.example.projetmobile.data.Entities.Product
 import com.example.projetmobile.ui.product.ProductViewModel
 import com.example.projetmobile.ui.product.component.DetailsScreen
 import com.example.projetmobile.ui.product.screens.HomeScreen
-import com.example.projetmobile.ui.user.AuthIntent
-import com.example.projetmobile.ui.user.AuthViewModel
-import com.example.projetmobile.ui.user.screens.AdminHomeScreen
-import com.example.projetmobile.ui.user.screens.LoginScreen
-import com.example.projetmobile.ui.user.screens.RegisterScreen
 
 object Routes {
     const val Home = "home"
@@ -31,46 +26,16 @@ object Routes {
     const val ProductDetails = "productDetails"
 }
 @Composable
-fun AppNavigation(authViewModel: AuthViewModel, productViewModel: ProductViewModel) {
+fun AppNavigation(productViewModel: ProductViewModel) {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "login") {
-        composable("login") {
-            LoginScreen(
-                viewModel = authViewModel,
-                navController = navController
-            )
-        }
-
-        composable("register") {
-            RegisterScreen(
-                viewModel = authViewModel,
-                navController = navController
-            )
-        }
-        composable(Routes.AdminHome) {
-            AdminHomeScreen(
-                navController = navController,
-                onLogout = {
-                    authViewModel.handleIntent(AuthIntent.Logout)
-                    navController.navigate(Routes.Login) {
-                        popUpTo(0) // Clear back stack
-                    }
-                }
-            )
-        }
+    NavHost(navController = navController, startDestination = Routes.ClientHome) {
 
         composable(Routes.ClientHome) {
             HomeScreen(
                 viewModel = productViewModel,
                 onNavigateToDetails = { productId ->
                     navController.navigate("${Routes.ProductDetails}/$productId")
-                },
-                onLogout = {
-                    authViewModel.handleIntent(AuthIntent.Logout)
-                    navController.navigate(Routes.Login) {
-                        popUpTo(0) // Clear back stack
-                    }
                 }
             )
         }

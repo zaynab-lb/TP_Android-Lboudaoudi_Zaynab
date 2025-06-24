@@ -33,7 +33,6 @@ import com.example.projetmobile.ui.product.component.ProductsList
 fun HomeScreen(
     viewModel: ProductViewModel = viewModel(),
     onNavigateToDetails: (String) -> Unit,
-    onLogout: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -48,24 +47,6 @@ fun HomeScreen(
             .padding(16.dp)
     )
     {
-
-        // Ajout de la Row pour le bouton de déconnexion
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
-        ) {
-            Button(
-                onClick = onLogout,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.errorContainer,
-                    contentColor = MaterialTheme.colorScheme.error
-                )
-            ) {
-                Text("Déconnexion")
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
 
         // Filtres par catégorie
         CategoryFilter(

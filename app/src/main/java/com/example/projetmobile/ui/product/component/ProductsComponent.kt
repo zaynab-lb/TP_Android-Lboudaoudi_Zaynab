@@ -27,7 +27,7 @@ fun ProductsList(products: List<Product>, onNavigateToDetails: (String) -> Unit)
             items(products) { product ->
                 ProductItem(
                     product = product,
-                    onDetailsClick = { onNavigateToDetails(product.id) }
+                    onDetailsClick = { onNavigateToDetails(product.productID) }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
             }

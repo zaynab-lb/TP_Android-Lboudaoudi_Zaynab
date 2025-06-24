@@ -38,7 +38,7 @@ class ProductViewModel @Inject constructor( private val repository: ProductRepos
             _state.value = ProductViewState(
                 isLoading = false,
                 products = allProducts,
-                categories = allProducts.map { it.category }.distinct().filterNotNull()
+                categories = allProducts.map { it.productCategory }.distinct().filterNotNull()
             )
         } catch (e: Exception) {
             _state.value =
@@ -51,7 +51,7 @@ class ProductViewModel @Inject constructor( private val repository: ProductRepos
             _state.value.copy(products = allProducts, selectedCategory = null)
         } else {
             _state.value.copy(
-                products = allProducts.filter { it.category == category },
+                products = allProducts.filter { it.productCategory == category },
                 selectedCategory = category
             )
         }

@@ -27,8 +27,8 @@ fun ProductItem(product: Product, onDetailsClick: () -> Unit) {
             //val imageUrl = "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/master/app/public/images/clavier.jpeg"
             Image(
                // painter = painterResource(id = product.imageRes),
-                painter = rememberAsyncImagePainter(model = product.imageRes),
-                contentDescription = product.title,
+                painter = rememberAsyncImagePainter(model = product.productImageRes),
+                contentDescription = product.productTitle,
                 modifier = Modifier.size(64.dp)
             )
 
@@ -36,31 +36,31 @@ fun ProductItem(product: Product, onDetailsClick: () -> Unit) {
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = product.title.toString(),
+                    text = product.productTitle.orEmpty(),
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
-                    text = product.category ?: "",
+                    text = product.productCategory ?: "",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.secondary
                 )
                 Text(
-                    text = "${product.price} DH",
+                    text = "${product.productPrice} DH",
                     style = MaterialTheme.typography.bodyLarge
                 )
 
                 // Affichage conditionnel du stock dans la liste
                 when {
-                    product.quantity == 0 -> {
+                    product.productQuantity == 0 -> {
                         Text(
                             text = "RUPTURE DE STOCK",
                             color = MaterialTheme.colorScheme.error,
                             style = MaterialTheme.typography.labelMedium
                         )
                     }
-                    product.quantity < 10 -> {
+                    product.productQuantity < 10 -> {
                         Text(
-                            text = "Stock faible (${product.quantity})",
+                            text = "Stock faible (${product.productQuantity})",
                             color = MaterialTheme.colorScheme.error,
                             style = MaterialTheme.typography.labelMedium
                         )

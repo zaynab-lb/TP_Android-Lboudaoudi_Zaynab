@@ -1,0 +1,23 @@
+{
+  "name": "projetfinmodel",
+  "version": "1.0.0",
+  "description": "TP Mobile :",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/issues"
+  },
+  "homepage": "https://github.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab#readme",
+  "dependencies": {
+    "firebase-admin": "^13.4.0"
+  }
+}

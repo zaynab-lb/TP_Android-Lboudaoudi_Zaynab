@@ -24,22 +24,22 @@ fun DetailsScreen(product: Product, navController: NavController)
     {
     Image(
         //painter = painterResource(id = product.imageRes),
-        painter = rememberAsyncImagePainter(model = product.imageRes),
-        contentDescription = product.title,
+        painter = rememberAsyncImagePainter(model = product.productImageRes),
+        contentDescription = product.productTitle,
         modifier = Modifier.size(200.dp)
     )
 
     Spacer(modifier = Modifier.height(24.dp))
 
     Text(
-        text = product.title.toString(),
+        text = product.productTitle.toString(),
         style = MaterialTheme.typography.headlineMedium
     )
 
     Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Catégorie: ${product.category}",
+            text = "Catégorie: ${product.productCategory}",
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.secondary
         )
@@ -47,7 +47,7 @@ fun DetailsScreen(product: Product, navController: NavController)
         Spacer(modifier = Modifier.height(8.dp))
 
     Text(
-        text = "Prix: ${product.price} DH",
+        text = "Prix: ${product.productPrice} DH",
         style = MaterialTheme.typography.titleLarge
     )
 
@@ -63,7 +63,7 @@ fun DetailsScreen(product: Product, navController: NavController)
                 modifier = Modifier.padding(bottom = 4.dp)
             )
             Text(
-                text = product.description ?: "Aucune description disponible",
+                text = product.productDescription ?: "Aucune description disponible",
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -73,7 +73,7 @@ fun DetailsScreen(product: Product, navController: NavController)
     // Affichage détaillé du stock
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         when {
-            product.quantity == 0 -> {
+            product.productQuantity == 0 -> {
                 Text(
                     text = "RUPTURE DE STOCK",
                     color = MaterialTheme.colorScheme.error,
@@ -84,14 +84,14 @@ fun DetailsScreen(product: Product, navController: NavController)
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
-            product.quantity < 10 -> {
+            product.productQuantity < 10 -> {
                 Text(
                     text = "STOCK FAIBLE",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.titleLarge
                 )
                 Text(
-                    text = "Plus que ${product.quantity} unité(s) disponible(s)",
+                    text = "Plus que ${product.productQuantity} unité(s) disponible(s)",
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
@@ -107,7 +107,7 @@ fun DetailsScreen(product: Product, navController: NavController)
                     style = MaterialTheme.typography.titleLarge
                 )
                 Text(
-                    text = "${product.quantity} unités en stock",
+                    text = "${product.productQuantity} unités en stock",
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -118,7 +118,7 @@ fun DetailsScreen(product: Product, navController: NavController)
     Spacer(modifier = Modifier.height(8.dp))
 
     Text(
-        text = "Référence: ${product.id}",
+        text = "Référence: ${product.productID}",
         style = MaterialTheme.typography.bodyMedium
     )
 

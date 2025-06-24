@@ -10,6 +10,7 @@ import com.example.projetmobile.ui.product.ProductViewModel
 import com.example.projetmobile.nav.AppNavigation
 import com.example.projetmobile.ui.theme.ProjetMobileTheme
 import com.example.projetmobile.ui.user.AuthViewModel
+import com.google.firebase.FirebaseApp
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -19,6 +20,9 @@ class MainActivity : ComponentActivity() {
     private val productViewModel: ProductViewModel by viewModels<ProductViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        FirebaseApp.initializeApp(this)
+
         enableEdgeToEdge()
         setContent {
             ProjetMobileTheme {

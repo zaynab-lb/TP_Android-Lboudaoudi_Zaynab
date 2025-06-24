@@ -1,6 +1,5 @@
 package com.example.projetmobile.data.DI
 
-import com.example.projetmobile.data.Api.ProductApi
 import com.example.projetmobile.data.Api.UserApi
 import dagger.Module
 import dagger.Provides
@@ -36,9 +35,6 @@ object NetworkModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-    @Provides
-    @Singleton
-    fun provideProductApi(retrofit: Retrofit): ProductApi = retrofit.create(ProductApi::class.java)
 
     @Provides
     @Singleton

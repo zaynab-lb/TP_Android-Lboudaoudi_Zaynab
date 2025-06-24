@@ -1,22 +1,33 @@
 package com.example.projetmobile.data.Repository
 
 import android.util.Log
-import com.example.projetmobile.R
-import com.example.projetmobile.data.Api.ProductApi
 import com.example.projetmobile.data.Entities.Product
-import jakarta.inject.Inject
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
-class ProductRepository @Inject constructor(private val api : ProductApi)
-{
+class ProductRepository @Inject constructor() {
+
+    private val db = FirebaseFirestore.getInstance()
 
     suspend fun getProducts(): List<Product> {
-        // fetch data from a remote server
-        val products = api.getProducts()
-        Log.d("products repo", "size :" + products.size)
-        return products
+        return try {
+            val snapshot = db.collection("products").get().await()
+            snapshot.documents.mapNotNull { it.toObject(Product::class.java) }
+        } catch (e: Exception) {
+            Log.e("Firebase", "Erreur Firestore : ${e.message}")
+            emptyList()
+        }
     }
 
     suspend fun getProductById(id: String): Product? {
-        return api.getProducts().find { it.id == id }
+        return try {
+            val snapshot = db.collection("products").get().await()
+            val products = snapshot.toObjects(Product::class.java)
+            products.find { it.productID == id }
+        } catch (e: Exception) {
+            null
+        }
     }
+
 }

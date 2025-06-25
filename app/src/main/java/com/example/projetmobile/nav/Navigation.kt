@@ -15,12 +15,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.projetmobile.data.Entities.Product
+import com.example.projetmobile.ui.cart.CartViewModel
+import com.example.projetmobile.ui.cart.screens.CartScreen
 import com.example.projetmobile.ui.product.ProductViewModel
 import com.example.projetmobile.ui.product.component.DetailsScreen
 import com.example.projetmobile.ui.product.screens.HomeScreen
 import com.example.projetmobile.ui.user.screens.AdminHomeScreen
 import com.example.projetmobile.ui.user.screens.LoginScreen
 import com.example.projetmobile.ui.user.screens.SignupScreen
+import com.google.firebase.auth.FirebaseAuth
 
 object Routes {
     const val Home = "home"
@@ -28,6 +31,7 @@ object Routes {
     const val AdminHome = "adminHome"
     const val ClientHome = "clientHome"
     const val ProductDetails = "productDetails"
+    const val CartScreen = "cart"
 }
 @Composable
 fun AppNavigation(productViewModel: ProductViewModel) {
@@ -96,6 +100,13 @@ fun AppNavigation(productViewModel: ProductViewModel) {
                     DetailsScreen(product = product!!, navController = navController)
                 }
             }
+        }
+
+        composable(Routes.CartScreen) {
+            val cartViewModel: CartViewModel = hiltViewModel()
+            val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+            LaunchedEffect(Unit) { cartViewModel.loadCart(userId) }
+            CartScreen(cartViewModel = cartViewModel, navController = navController)
         }
     }
 }

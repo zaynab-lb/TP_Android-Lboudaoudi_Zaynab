@@ -1,134 +1,118 @@
 package com.example.projetmobile.ui.product.component
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.example.projetmobile.data.Entities.CartItem
 import com.example.projetmobile.data.Entities.Product
+import com.example.projetmobile.ui.cart.CartViewModel
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.launch
 
 @Composable
-fun DetailsScreen(product: Product, navController: NavController)
-{
-    Column(
-    modifier = Modifier
-    .fillMaxSize()
-    .padding(16.dp),
-    horizontalAlignment = Alignment.CenterHorizontally
-    )
-    {
-    Image(
-        //painter = painterResource(id = product.imageRes),
-        painter = rememberAsyncImagePainter(model = product.productImageRes),
-        contentDescription = product.productTitle,
-        modifier = Modifier.size(200.dp)
-    )
+fun DetailsScreen(product: Product, navController: NavController) {
+    val cartViewModel: CartViewModel = hiltViewModel()
+    val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+    var quantityToAdd by remember { mutableStateOf("1") }
 
-    Spacer(modifier = Modifier.height(24.dp))
+    // Pour afficher le message
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
 
-    Text(
-        text = product.productTitle.toString(),
-        style = MaterialTheme.typography.headlineMedium
-    )
-
-    Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = "Catégorie: ${product.productCategory}",
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.secondary
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-    Text(
-        text = "Prix: ${product.productPrice} DH",
-        style = MaterialTheme.typography.titleLarge
-    )
-
-    Spacer(modifier = Modifier.height(8.dp))
-
+    Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+    ) { innerPadding ->
         Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.Start
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "Description:",
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(bottom = 4.dp)
+            // Affichage de l’image
+            Image(
+                painter = rememberAsyncImagePainter(model = product.productImageRes),
+                contentDescription = product.productTitle,
+                modifier = Modifier.size(200.dp)
             )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
             Text(
-                text = product.productDescription ?: "Aucune description disponible",
-                style = MaterialTheme.typography.bodyMedium
+                text = product.productTitle.orEmpty(),
+                style = MaterialTheme.typography.headlineMedium
             )
-        }
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-    // Affichage détaillé du stock
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        when {
-            product.productQuantity == 0 -> {
-                Text(
-                    text = "RUPTURE DE STOCK",
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.titleLarge
-                )
-                Text(
-                    text = "Ce produit n'est actuellement pas disponible",
-                    style = MaterialTheme.typography.bodyMedium
-                )
+            Text("Catégorie: ${product.productCategory}")
+            Text("Prix: ${product.productPrice} DH")
+            Text("Stock disponible: ${product.productQuantity}")
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = quantityToAdd,
+                onValueChange = { quantityToAdd = it },
+                label = { Text("Quantité") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                modifier = Modifier.fillMaxWidth(0.6f)
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = {
+                    val qty = quantityToAdd.toIntOrNull()
+                    if (qty == null || qty <= 0) {
+                        scope.launch {
+                            snackbarHostState.showSnackbar("Veuillez saisir une quantité valide")
+                        }
+                    } else if (qty > product.productQuantity) {
+                        scope.launch {
+                            snackbarHostState.showSnackbar("Quantité demandée dépasse le stock disponible !")
+                        }
+                    } else {
+                        val item = CartItem(
+                            productId = product.productID,
+                            title = product.productTitle ?: "",
+                            price = product.productPrice,
+                            quantity = qty,
+                            imageUrl = product.productImageRes
+                        )
+                        cartViewModel.addToCart(userId, item)
+                        scope.launch {
+                            snackbarHostState.showSnackbar("Produit ajouté au panier !")
+                        }
+                    }
+                },
+                modifier = Modifier.fillMaxWidth(0.6f)
+            ) {
+                Text("Ajouter au panier")
             }
-            product.productQuantity < 10 -> {
-                Text(
-                    text = "STOCK FAIBLE",
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.titleLarge
-                )
-                Text(
-                    text = "Plus que ${product.productQuantity} unité(s) disponible(s)",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Text(
-                    text = "Commandez rapidement !",
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.labelMedium
-                )
-            }
-            else -> {
-                Text(
-                    text = "DISPONIBLE",
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.titleLarge
-                )
-                Text(
-                    text = "${product.productQuantity} unités en stock",
-                    style = MaterialTheme.typography.bodyMedium
-                )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Button(
+                onClick = { navController.navigateUp() },
+                modifier = Modifier.fillMaxWidth(0.6f)
+            ) {
+                Text("Retour à la liste")
             }
         }
     }
-
-
-    Spacer(modifier = Modifier.height(8.dp))
-
-    Text(
-        text = "Référence: ${product.productID}",
-        style = MaterialTheme.typography.bodyMedium
-    )
-
-    Spacer(modifier = Modifier.height(24.dp))
-
-    Button(
-        onClick = { navController.navigateUp() },
-        modifier = Modifier.fillMaxWidth(0.6f)
-    ) {
-        Text("Retour à la liste")
-    }
-}
 }

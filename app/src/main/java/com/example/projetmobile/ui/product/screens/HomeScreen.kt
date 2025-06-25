@@ -77,6 +77,17 @@ fun HomeScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        Button(
+            onClick = {
+                navController.navigate("cart")
+            },
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6200EE))
+        ) {
+            Text("Voir mon panier", color = Color.White)
+        }
+
+
         when {
             state.isLoading -> {
                 // Display a Circular loader

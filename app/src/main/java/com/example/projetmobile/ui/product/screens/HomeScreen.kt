@@ -26,12 +26,18 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.graphics.Color
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.example.projetmobile.nav.Routes
 import com.example.projetmobile.ui.product.ProductIntent
 import com.example.projetmobile.ui.product.component.ProductsList
+import com.example.projetmobile.ui.user.AuthViewModel
 
 @Composable
 fun HomeScreen(
     viewModel: ProductViewModel = viewModel(),
+    authViewModel: AuthViewModel = hiltViewModel(),
+    navController: NavController,
     onNavigateToDetails: (String) -> Unit,
 ) {
     val state by viewModel.state.collectAsState()
@@ -47,6 +53,18 @@ fun HomeScreen(
             .padding(16.dp)
     )
     {
+        Button(
+            onClick = {
+                authViewModel.logout()
+                navController.navigate(Routes.Login) {
+                    popUpTo(Routes.ClientHome) { inclusive = true }
+                }
+            },
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+        ) {
+            Text("Se déconnecter", color = Color.White)
+        }
+
 
         // Filtres par catégorie
         CategoryFilter(

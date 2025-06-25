@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,6 +18,9 @@ import com.example.projetmobile.data.Entities.Product
 import com.example.projetmobile.ui.product.ProductViewModel
 import com.example.projetmobile.ui.product.component.DetailsScreen
 import com.example.projetmobile.ui.product.screens.HomeScreen
+import com.example.projetmobile.ui.user.screens.AdminHomeScreen
+import com.example.projetmobile.ui.user.screens.LoginScreen
+import com.example.projetmobile.ui.user.screens.SignupScreen
 
 object Routes {
     const val Home = "home"
@@ -29,16 +33,38 @@ object Routes {
 fun AppNavigation(productViewModel: ProductViewModel) {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = Routes.ClientHome) {
+    NavHost(navController = navController, startDestination = Routes.Login) {
+
+        composable(Routes.Login) {
+            LoginScreen(
+                onClientLogin = { navController.navigate(Routes.ClientHome) },
+                onAdminLogin = { navController.navigate(Routes.AdminHome) },
+                navController = navController
+            )
+        }
+
+        composable("signup") {
+            SignupScreen(
+                onSignupSuccess = { navController.navigate(Routes.ClientHome) },
+                navController = navController
+            )
+        }
 
         composable(Routes.ClientHome) {
             HomeScreen(
                 viewModel = productViewModel,
+                authViewModel = hiltViewModel(),
+                navController = navController,
                 onNavigateToDetails = { productId ->
                     navController.navigate("${Routes.ProductDetails}/$productId")
                 }
             )
         }
+
+        composable(Routes.AdminHome) {
+            AdminHomeScreen(navController = navController)
+        }
+
 
 
 

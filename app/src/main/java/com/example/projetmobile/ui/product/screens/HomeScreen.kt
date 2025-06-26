@@ -77,6 +77,14 @@ fun HomeScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        Button(
+            onClick = { navController.navigate(Routes.UserInfo) },
+            modifier = Modifier.padding(top = 16.dp)
+        ) {
+            Text("Profil")
+        }
+
+
 
         // Filtres par catégorie
         CategoryFilter(

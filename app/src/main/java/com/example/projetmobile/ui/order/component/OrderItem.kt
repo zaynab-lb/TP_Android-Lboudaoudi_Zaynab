@@ -19,7 +19,7 @@ fun OrderItem(order: Order) {
         ) {
             Text("Commande #${order.date.seconds}", style = MaterialTheme.typography.titleMedium)
             Text("Date: ${order.date.toDate()}", style = MaterialTheme.typography.bodySmall)
-            Text("Total: ${order.totalPrice} €", style = MaterialTheme.typography.bodyLarge)
+            Text("Total: ${order.totalPrice} DH", style = MaterialTheme.typography.bodyLarge)
             Text("Statut: ${order.status}", style = MaterialTheme.typography.labelLarge)
 
 

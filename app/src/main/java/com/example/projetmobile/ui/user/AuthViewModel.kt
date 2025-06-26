@@ -35,4 +35,12 @@ class AuthViewModel @Inject constructor(
     }
 
     fun logout() = authService.logout()
+
+    fun loadCurrentUser(onResult: (User?) -> Unit) {
+        viewModelScope.launch {
+            val user = authService.getCurrentUser()
+            onResult(user)
+        }
+    }
+
 }

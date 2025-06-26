@@ -39,6 +39,14 @@ fun AdminHomeScreen(navController: NavController, viewModel: AuthViewModel = hil
         ) {
             Text("Se déconnecter", color = Color.White)
         }
+
+        Button(
+            onClick = { navController.navigate(Routes.UserInfo) },
+            modifier = Modifier.padding(top = 16.dp)
+        ) {
+            Text("Profil")
+        }
+
     }
 }
 

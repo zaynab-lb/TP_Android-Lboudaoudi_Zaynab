@@ -27,6 +27,7 @@ import com.example.projetmobile.ui.product.screens.HomeScreen
 import com.example.projetmobile.ui.user.screens.AdminHomeScreen
 import com.example.projetmobile.ui.user.screens.LoginScreen
 import com.example.projetmobile.ui.user.screens.SignupScreen
+import com.example.projetmobile.ui.user.screens.UserInfoScreen
 import com.google.firebase.auth.FirebaseAuth
 
 object Routes {
@@ -38,6 +39,7 @@ object Routes {
     const val CartScreen = "cart"
     const val Checkout = "checkout"
     const val OrdersScreen = "orders"
+    const val UserInfo = "userInfo"
 }
 @Composable
 fun AppNavigation(productViewModel: ProductViewModel) {
@@ -137,6 +139,11 @@ fun AppNavigation(productViewModel: ProductViewModel) {
                 navController = navController
             )
         }
+
+        composable(Routes.UserInfo) {
+            UserInfoScreen(navController = navController)
+        }
+
     }
 }
 

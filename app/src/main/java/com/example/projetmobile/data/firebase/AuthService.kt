@@ -39,4 +39,16 @@ class AuthService @Inject constructor(
     fun logout() {
         auth.signOut()
     }
+
+    suspend fun getCurrentUser(): User? {
+        val userId = auth.currentUser?.uid ?: return null
+        return try {
+            firestore.collection("users").document(userId)
+                .get().await()
+                .toObject(User::class.java)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
 }

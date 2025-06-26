@@ -15,6 +15,8 @@ import com.example.projetmobile.data.Entities.Product
 
 @Composable
 fun ProductsList(products: List<Product>, onNavigateToDetails: (String) -> Unit) {
+    val filteredProducts = products.filter { it.productQuantity > 0 }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -36,7 +38,7 @@ fun ProductsList(products: List<Product>, onNavigateToDetails: (String) -> Unit)
         )
 
         LazyColumn {
-            items(products) { product ->
+            items(filteredProducts) { product ->
                 ProductItem(
                     product = product,
                     onDetailsClick = { onNavigateToDetails(product.productID) }

@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.projetmobile.data.Entities.User
+import com.example.projetmobile.ui.menu.component.AppMenu
 import com.example.projetmobile.ui.user.AuthViewModel
 
 @Composable
@@ -45,6 +46,10 @@ fun EditProfileScreen(
             .padding(16.dp),
         horizontalAlignment = Alignment.Start
     ) {
+        AppMenu(navController = navController, authViewModel = authViewModel)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Text("Modifier mon profil", style = MaterialTheme.typography.headlineMedium)
 
         if (isLoading) {

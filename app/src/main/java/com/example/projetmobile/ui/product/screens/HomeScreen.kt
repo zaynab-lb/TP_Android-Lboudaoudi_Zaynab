@@ -28,7 +28,7 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.projetmobile.nav.Routes
+import com.example.projetmobile.ui.menu.component.AppMenu
 import com.example.projetmobile.ui.product.ProductIntent
 import com.example.projetmobile.ui.product.component.ProductsList
 import com.example.projetmobile.ui.user.AuthViewModel
@@ -43,7 +43,6 @@ fun HomeScreen(
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(viewModel) {
-        // Call loadProducts() method when the composable is first launched.
         viewModel.handleIntent(ProductIntent.LoadProducts)
     }
 
@@ -51,42 +50,17 @@ fun HomeScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
-    )
-    {
-        Button(
-            onClick = {
-                authViewModel.logout()
-                navController.navigate(Routes.Login) {
-                    popUpTo(Routes.ClientHome) { inclusive = true }
-                }
-            },
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
-        ) {
-            Text("Se déconnecter", color = Color.White)
-        }
+    ) {
+        // 👉 Affichage du menu dynamique
+        AppMenu(
+            navController = navController,
+            authViewModel = authViewModel,
+            modifier = Modifier.fillMaxWidth()
+        )
 
-        Button(
-            onClick = {
-                navController.navigate(Routes.OrdersScreen)
-            },
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50))
-        ) {
-            Text("Mes commandes", color = Color.White)
-        }
+        Spacer(modifier = Modifier.height(16.dp))
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Button(
-            onClick = { navController.navigate(Routes.UserInfo) },
-            modifier = Modifier.padding(top = 16.dp)
-        ) {
-            Text("Profil")
-        }
-
-
-
-        // Filtres par catégorie
+        // 👉 Filtres par catégorie
         CategoryFilter(
             categories = state.categories,
             selectedCategory = state.selectedCategory,
@@ -97,30 +71,17 @@ fun HomeScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(
-            onClick = {
-                navController.navigate("cart")
-            },
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6200EE))
-        ) {
-            Text("Voir mon panier", color = Color.White)
-        }
-
-
+        // 👉 Affichage des produits ou messages d’état
         when {
             state.isLoading -> {
-                // Display a Circular loader
                 CircularProgressIndicator(modifier = Modifier.align(CenterHorizontally))
             }
 
             state.error != null -> {
-                // Display an error message
-                Text(text = "Error: ${state.error}", color = Color.Red)
+                Text(text = "Erreur : ${state.error}", color = Color.Red)
             }
 
             else -> {
-                // Display products when fetch is success
                 ProductsList(products = state.products, onNavigateToDetails)
             }
         }

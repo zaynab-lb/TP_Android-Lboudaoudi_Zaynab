@@ -11,10 +11,13 @@ import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.projetmobile.nav.Routes
 import com.example.projetmobile.ui.cart.CartViewModel
+import com.example.projetmobile.ui.menu.component.AppMenu
 import com.example.projetmobile.ui.product.ProductViewModel
+import com.example.projetmobile.ui.user.AuthViewModel
 import com.google.firebase.auth.FirebaseAuth
 import java.util.Calendar
 
@@ -22,7 +25,8 @@ import java.util.Calendar
 fun CheckoutScreen(
     cartViewModel: CartViewModel,
     productViewModel: ProductViewModel,
-    navController: NavController
+    navController: NavController,
+    authViewModel: AuthViewModel = hiltViewModel()
 ) {
     var name by remember { mutableStateOf("") }
     var address by remember { mutableStateOf("") }
@@ -45,6 +49,10 @@ fun CheckoutScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
+        AppMenu(navController = navController, authViewModel = authViewModel)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Text("Informations de livraison", style = MaterialTheme.typography.headlineMedium)
 
         OutlinedTextField(

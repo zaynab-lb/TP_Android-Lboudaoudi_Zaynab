@@ -10,14 +10,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.projetmobile.ui.menu.component.AppMenu
 import com.example.projetmobile.ui.order.OrderViewModel
 import com.example.projetmobile.ui.order.component.OrderItem
+import com.example.projetmobile.ui.user.AuthViewModel
 
 @Composable
 fun OrdersScreen(
     orderViewModel: OrderViewModel,
-    navController: NavController
+    navController: NavController,
+    authViewModel: AuthViewModel = hiltViewModel()
 ) {
     val orders by orderViewModel.orders.collectAsState()
     val isLoading by orderViewModel.isLoading.collectAsState()
@@ -28,6 +32,10 @@ fun OrdersScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
+        AppMenu(navController = navController, authViewModel = authViewModel)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Text(
             text = "Mes commandes",
             style = MaterialTheme.typography.headlineMedium,

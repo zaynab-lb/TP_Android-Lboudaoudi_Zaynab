@@ -10,6 +10,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.projetmobile.data.Entities.User
 import com.example.projetmobile.nav.Routes
+import com.example.projetmobile.ui.menu.component.AppMenu
 import com.example.projetmobile.ui.user.AuthViewModel
 import com.google.firebase.auth.FirebaseAuth
 
@@ -29,6 +30,10 @@ fun UserInfoScreen(navController: NavController, authViewModel: AuthViewModel = 
             .padding(16.dp),
         horizontalAlignment = Alignment.Start
     ) {
+        AppMenu(navController = navController, authViewModel = authViewModel)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Text("Mes Informations", style = MaterialTheme.typography.headlineMedium)
 
         user?.let {

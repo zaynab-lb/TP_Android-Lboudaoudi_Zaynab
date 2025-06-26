@@ -8,13 +8,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.projetmobile.nav.Routes
 import com.example.projetmobile.ui.cart.CartViewModel
+import com.example.projetmobile.ui.menu.component.AppMenu
+import com.example.projetmobile.ui.user.AuthViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun CartScreen(cartViewModel: CartViewModel, navController: NavController) {
+fun CartScreen(cartViewModel: CartViewModel, navController: NavController, authViewModel: AuthViewModel = hiltViewModel()) {
     val cartItems by cartViewModel.cartItems.collectAsState()
     val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
 
@@ -23,6 +26,10 @@ fun CartScreen(cartViewModel: CartViewModel, navController: NavController) {
             .fillMaxSize()
             .padding(16.dp)
     ) {
+        AppMenu(navController = navController, authViewModel = authViewModel)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Text("Mon Panier", style = MaterialTheme.typography.headlineMedium)
 
         Spacer(modifier = Modifier.height(16.dp))

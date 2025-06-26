@@ -1,7 +1,9 @@
 package com.example.projetmobile.ui.user.screens
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -15,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.projetmobile.nav.Routes
+import com.example.projetmobile.ui.menu.component.AppMenu
 import com.example.projetmobile.ui.user.AuthViewModel
 
 @Composable
@@ -25,6 +28,9 @@ fun AdminHomeScreen(navController: NavController, viewModel: AuthViewModel = hil
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        AppMenu(navController = navController, authViewModel = viewModel)
+
+        Spacer(modifier = Modifier.height(16.dp))
         Text("Bienvenue Admin", style = MaterialTheme.typography.headlineMedium)
 
         Button(

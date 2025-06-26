@@ -2,10 +2,12 @@ package com.example.projetmobile.ui.product.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
@@ -13,10 +15,13 @@ import com.example.projetmobile.data.Entities.Product
 
 @Composable
 fun ProductItem(product: Product, onDetailsClick: () -> Unit) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp)
+            .padding(vertical = 6.dp),
+        shape = RoundedCornerShape(16.dp),
+        shadowElevation = 6.dp,
+        color = Color.White
     ) {
         Row(
             modifier = Modifier
@@ -24,9 +29,7 @@ fun ProductItem(product: Product, onDetailsClick: () -> Unit) {
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            //val imageUrl = "https://raw.githubusercontent.com/zaynab-lb/TP_Android-Lboudaoudi_Zaynab/master/app/public/images/clavier.jpeg"
             Image(
-               // painter = painterResource(id = product.imageRes),
                 painter = rememberAsyncImagePainter(model = product.productImageRes),
                 contentDescription = product.productTitle,
                 modifier = Modifier.size(64.dp)
@@ -37,7 +40,8 @@ fun ProductItem(product: Product, onDetailsClick: () -> Unit) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = product.productTitle.orEmpty(),
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
+                    color = Color(0xFF01579B) // bleu foncé
                 )
                 Text(
                     text = product.productCategory ?: "",
@@ -46,10 +50,10 @@ fun ProductItem(product: Product, onDetailsClick: () -> Unit) {
                 )
                 Text(
                     text = "${product.productPrice} DH",
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Color(0xFF0288D1) // bleu ciel foncé
                 )
 
-                // Affichage conditionnel du stock dans la liste
                 when {
                     product.productQuantity == 0 -> {
                         Text(
@@ -75,8 +79,13 @@ fun ProductItem(product: Product, onDetailsClick: () -> Unit) {
                 }
             }
 
-            Button(onClick = onDetailsClick) {
-                Text("Détails")
+            Button(
+                onClick = onDetailsClick,
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0288D1)),
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier.height(40.dp)
+            ) {
+                Text(text = "Détails", color = Color.White)
             }
         }
     }

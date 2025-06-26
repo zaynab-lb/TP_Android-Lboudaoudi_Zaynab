@@ -1,7 +1,9 @@
 package com.example.projetmobile.ui.product.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,7 +26,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -32,6 +36,7 @@ import com.example.projetmobile.ui.menu.component.AppMenu
 import com.example.projetmobile.ui.product.ProductIntent
 import com.example.projetmobile.ui.product.component.ProductsList
 import com.example.projetmobile.ui.user.AuthViewModel
+import androidx.compose.foundation.lazy.items
 
 @Composable
 fun HomeScreen(
@@ -49,9 +54,16 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(
+                Brush.verticalGradient(
+                    colors = listOf(
+                        Color(0xFFE1F5FE),
+                        Color(0xFFB3E5FC)
+                    )
+                )
+            )
             .padding(16.dp)
     ) {
-        // 👉 Affichage du menu dynamique
         AppMenu(
             navController = navController,
             authViewModel = authViewModel,
@@ -60,7 +72,6 @@ fun HomeScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // 👉 Filtres par catégorie
         CategoryFilter(
             categories = state.categories,
             selectedCategory = state.selectedCategory,
@@ -71,14 +82,13 @@ fun HomeScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // 👉 Affichage des produits ou messages d’état
         when {
             state.isLoading -> {
-                CircularProgressIndicator(modifier = Modifier.align(CenterHorizontally))
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
             }
 
             state.error != null -> {
-                Text(text = "Erreur : ${state.error}", color = Color.Red)
+                Text(text = "Erreur : ${state.error}", color = MaterialTheme.colorScheme.error)
             }
 
             else -> {
@@ -94,28 +104,24 @@ fun CategoryFilter(
     selectedCategory: String?,
     onCategorySelected: (String?) -> Unit
 ) {
-    Column {
-        Spacer(modifier = Modifier.height(8.dp))
-        LazyRow {
-            item {
-                Row {
-                    FilterChip(
-                        selected = selectedCategory == null,
-                        onClick = { onCategorySelected(null) },
-                        label = { Text("Tous") }
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    categories.forEach { category ->
-                        FilterChip(
-                            selected = selectedCategory == category,
-                            onClick = { onCategorySelected(category) },
-                            label = { Text(category) },
-                            modifier = Modifier.padding(end = 8.dp)
-                        )
-                    }
-                }
-            }
+    LazyRow(
+        modifier = Modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(horizontal = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        item {
+            FilterChip(
+                selected = selectedCategory == null,
+                onClick = { onCategorySelected(null) },
+                label = { Text("Tous") }
+            )
+        }
+        items(categories) { category ->
+            FilterChip(
+                selected = selectedCategory == category,
+                onClick = { onCategorySelected(category) },
+                label = { Text(category) }
+            )
         }
     }
 }

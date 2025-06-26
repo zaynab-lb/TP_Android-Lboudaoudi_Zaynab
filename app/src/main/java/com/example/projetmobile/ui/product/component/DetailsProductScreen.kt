@@ -29,7 +29,6 @@ fun DetailsScreen(product: Product, navController: NavController) {
     val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
     var quantityToAdd by remember { mutableStateOf("1") }
 
-    // Pour afficher le message
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
@@ -43,7 +42,6 @@ fun DetailsScreen(product: Product, navController: NavController) {
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Affichage de l’image
             Image(
                 painter = rememberAsyncImagePainter(model = product.productImageRes),
                 contentDescription = product.productTitle,
@@ -78,25 +76,23 @@ fun DetailsScreen(product: Product, navController: NavController) {
             Button(
                 onClick = {
                     val qty = quantityToAdd.toIntOrNull()
-                    if (qty == null || qty <= 0) {
-                        scope.launch {
-                            snackbarHostState.showSnackbar("Veuillez saisir une quantité valide")
+                    when {
+                        qty == null || qty <= 0 -> {
+                            scope.launch {
+                                snackbarHostState.showSnackbar("Veuillez saisir une quantité valide")
+                            }
                         }
-                    } else if (qty > product.productQuantity) {
-                        scope.launch {
-                            snackbarHostState.showSnackbar("Quantité demandée dépasse le stock disponible !")
+                        qty > product.productQuantity -> {
+                            scope.launch {
+                                snackbarHostState.showSnackbar("Quantité demandée dépasse le stock disponible !")
+                            }
                         }
-                    } else {
-                        val item = CartItem(
-                            productId = product.productID,
-                            title = product.productTitle ?: "",
-                            price = product.productPrice,
-                            quantity = qty,
-                            imageUrl = product.productImageRes
-                        )
-                        cartViewModel.addToCart(userId, item)
-                        scope.launch {
-                            snackbarHostState.showSnackbar("Produit ajouté au panier !")
+                        else -> {
+                            cartViewModel.addToCart(userId, product, qty)
+                            cartViewModel.loadCart(userId)
+                            scope.launch {
+                                snackbarHostState.showSnackbar("Produit ajouté au panier !")
+                            }
                         }
                     }
                 },

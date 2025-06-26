@@ -30,4 +30,11 @@ class FirebaseProductService @Inject constructor(
             null
         }
     }
+
+    suspend fun updateProductQuantity(productId: String, newQuantity: Int) {
+        firestore.collection("products")
+            .document(productId)
+            .update("productQuantity", newQuantity)
+            .await()
+    }
 }

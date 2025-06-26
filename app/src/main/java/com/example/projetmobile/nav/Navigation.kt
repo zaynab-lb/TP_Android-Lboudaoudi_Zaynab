@@ -17,6 +17,7 @@ import androidx.navigation.navArgument
 import com.example.projetmobile.data.Entities.Product
 import com.example.projetmobile.ui.cart.CartViewModel
 import com.example.projetmobile.ui.cart.screens.CartScreen
+import com.example.projetmobile.ui.order.screens.CheckoutScreen
 import com.example.projetmobile.ui.product.ProductViewModel
 import com.example.projetmobile.ui.product.component.DetailsScreen
 import com.example.projetmobile.ui.product.screens.HomeScreen
@@ -32,6 +33,7 @@ object Routes {
     const val ClientHome = "clientHome"
     const val ProductDetails = "productDetails"
     const val CartScreen = "cart"
+    const val Checkout = "checkout"
 }
 @Composable
 fun AppNavigation(productViewModel: ProductViewModel) {
@@ -107,6 +109,15 @@ fun AppNavigation(productViewModel: ProductViewModel) {
             val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
             LaunchedEffect(Unit) { cartViewModel.loadCart(userId) }
             CartScreen(cartViewModel = cartViewModel, navController = navController)
+        }
+
+        composable(Routes.Checkout) {
+            val cartViewModel: CartViewModel = hiltViewModel()
+            CheckoutScreen(
+                cartViewModel = cartViewModel,
+                productViewModel = productViewModel,
+                navController = navController
+            )
         }
     }
 }

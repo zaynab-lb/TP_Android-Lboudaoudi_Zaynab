@@ -29,7 +29,7 @@ fun CartScreen(cartViewModel: CartViewModel, navController: NavController) {
 
         if (cartItems.isEmpty()) {
             Text("Votre panier est vide.")
-            Spacer(modifier = Modifier.weight(1f)) // Pousse les boutons en bas
+            Spacer(modifier = Modifier.weight(1f))
         } else {
             LazyColumn(modifier = Modifier.weight(1f)) {
                 items(cartItems) { item ->
@@ -39,16 +39,23 @@ fun CartScreen(cartViewModel: CartViewModel, navController: NavController) {
                             .padding(vertical = 8.dp)
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
-                            Text(text = item.title, style = MaterialTheme.typography.titleMedium)
-                            Text(text = "Prix unitaire : ${item.price} DH")
-                            Text(text = "Total : ${item.quantity * item.price} DH")
+                            Text(
+                                text = item.product.productTitle ?: "",
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                            Text(text = "Prix unitaire : ${item.product.productPrice} DH")
+                            Text(text = "Total : ${item.quantity * item.product.productPrice} DH")
 
                             Spacer(modifier = Modifier.height(8.dp))
 
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Button(onClick = {
                                     if (item.quantity > 1)
-                                        cartViewModel.updateQuantity(userId, item.productId, item.quantity - 1)
+                                        cartViewModel.updateQuantity(
+                                            userId,
+                                            item.product.productID,
+                                            item.quantity - 1
+                                        )
                                 }) {
                                     Text("-")
                                 }
@@ -59,9 +66,12 @@ fun CartScreen(cartViewModel: CartViewModel, navController: NavController) {
                                 )
 
                                 Button(onClick = {
-                                    val maxStock = 10
-                                    if (item.quantity < maxStock)
-                                        cartViewModel.updateQuantity(userId, item.productId, item.quantity + 1)
+                                    if (item.quantity < item.product.productQuantity)
+                                        cartViewModel.updateQuantity(
+                                            userId,
+                                            item.product.productID,
+                                            item.quantity + 1
+                                        )
                                 }) {
                                     Text("+")
                                 }
@@ -69,7 +79,7 @@ fun CartScreen(cartViewModel: CartViewModel, navController: NavController) {
                                 Spacer(modifier = Modifier.width(16.dp))
 
                                 OutlinedButton(onClick = {
-                                    cartViewModel.removeItem(userId, item.productId)
+                                    cartViewModel.removeItem(userId, item.product.productID)
                                 }) {
                                     Text("Supprimer")
                                 }
@@ -81,7 +91,7 @@ fun CartScreen(cartViewModel: CartViewModel, navController: NavController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            val totalPrice = cartItems.sumOf { it.quantity * it.price }
+            val totalPrice = cartItems.sumOf { it.quantity * it.product.productPrice }
 
             Text(
                 text = "Total : $totalPrice DH",
@@ -90,7 +100,6 @@ fun CartScreen(cartViewModel: CartViewModel, navController: NavController) {
             )
         }
 
-        // Boutons affichés dans tous les cas
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -109,13 +118,23 @@ fun CartScreen(cartViewModel: CartViewModel, navController: NavController) {
 
             if (cartItems.isNotEmpty()) {
                 Button(
-                    onClick = {
-                        cartViewModel.clearCart(userId)
-                    },
+                    onClick = { cartViewModel.clearCart(userId) },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
                 ) {
                     Text("Vider le panier", color = MaterialTheme.colorScheme.onError)
                 }
+            }
+        }
+
+        if (cartItems.isNotEmpty()) {
+            Button(
+                onClick = { navController.navigate(Routes.Checkout) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+            ) {
+                Text("Valider la commande")
             }
         }
     }

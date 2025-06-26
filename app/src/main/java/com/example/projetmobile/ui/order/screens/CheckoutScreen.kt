@@ -1,10 +1,14 @@
 package com.example.projetmobile.ui.order.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.OffsetMapping
@@ -44,165 +48,154 @@ fun CheckoutScreen(
     var expiryDateError by remember { mutableStateOf(false) }
     var cvvError by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        AppMenu(navController = navController, authViewModel = authViewModel)
+    Scaffold(
+        containerColor = Color.Transparent
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Brush.verticalGradient(colors = listOf(Color(0xFFE1F5FE), Color(0xFFB3E5FC))))
+                .padding(padding)
+                .padding(16.dp)
+        ) {
+            AppMenu(navController = navController, authViewModel = authViewModel, modifier = Modifier.fillMaxWidth())
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
+            Text("Informations de livraison", style = MaterialTheme.typography.headlineMedium, color = Color(0xFF0288D1))
 
-        Text("Informations de livraison", style = MaterialTheme.typography.headlineMedium)
-
-        OutlinedTextField(
-            value = name,
-            onValueChange = {
-                name = it
-                nameError = false
-            },
-            label = { Text("Nom complet") },
-            modifier = Modifier.fillMaxWidth(),
-            isError = nameError,
-            supportingText = { if (nameError) Text("Ce champ est obligatoire") }
-        )
-
-        OutlinedTextField(
-            value = address,
-            onValueChange = {
-                address = it
-                addressError = false
-            },
-            label = { Text("Adresse complète") },
-            modifier = Modifier.fillMaxWidth(),
-            isError = addressError,
-            supportingText = { if (addressError) Text("Ce champ est obligatoire") }
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text("Informations de paiement", style = MaterialTheme.typography.headlineMedium)
-
-        OutlinedTextField(
-            value = cardNumber,
-            onValueChange = {
-                val digitsOnly = it.filter { c -> c.isDigit() }
-                if (digitsOnly.length <= 16) {
-                    cardNumber = digitsOnly
-                    cardNumberError = false
-                }
-            },
-            label = { Text("Numéro de carte") },
-            modifier = Modifier.fillMaxWidth(),
-            isError = cardNumberError,
-            supportingText = {
-                when {
-                    cardNumberError && cardNumber.isEmpty() -> Text("Ce champ est obligatoire")
-                    cardNumberError -> Text("Numéro de carte invalide (16 chiffres)")
-                    else -> {}
-                }
-            },
-            visualTransformation = CreditCardFilter,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-        )
-
-        Row(modifier = Modifier.fillMaxWidth()) {
             OutlinedTextField(
-                value = expiryDate,
-                onValueChange = { newValue ->
-                    val digitsOnly = newValue.filter { it.isDigit() }
-                    when {
-                        digitsOnly.isEmpty() -> {
-                            expiryDate = ""
-                            expiryDateError = false
-                        }
-                        digitsOnly.length <= 4 -> {
-                            val formatted = when {
-                                digitsOnly.length <= 2 -> digitsOnly
-                                else -> "${digitsOnly.take(2)}/${digitsOnly.drop(2)}"
-                            }
-                            expiryDate = formatted
-                            expiryDateError = false
-                        }
-                    }
-                },
-                label = { Text("Date d'expiration (MM/AA)") },
-                modifier = Modifier.weight(1f),
-                isError = expiryDateError,
-                supportingText = {
-                    when {
-                        expiryDateError && expiryDate.isEmpty() -> Text("Ce champ est obligatoire")
-                        expiryDateError -> Text("Format invalide ou carte expirée")
-                        else -> {}
-                    }
-                },
-                visualTransformation = ExpiryDateFilter,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                placeholder = { Text("MM/AA") }
+                value = name,
+                onValueChange = { name = it; nameError = false },
+                label = { Text("Nom complet") },
+                modifier = Modifier.fillMaxWidth(),
+                isError = nameError,
+                supportingText = { if (nameError) Text("Ce champ est obligatoire") }
             )
 
-            Spacer(modifier = Modifier.width(8.dp))
+            OutlinedTextField(
+                value = address,
+                onValueChange = { address = it; addressError = false },
+                label = { Text("Adresse complète") },
+                modifier = Modifier.fillMaxWidth(),
+                isError = addressError,
+                supportingText = { if (addressError) Text("Ce champ est obligatoire") }
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+            Text("Informations de paiement", style = MaterialTheme.typography.headlineMedium, color = Color(0xFF0288D1))
 
             OutlinedTextField(
-                value = cvv,
+                value = cardNumber,
                 onValueChange = {
-                    if (it.length <= 3 && it.all { c -> c.isDigit() }) {
-                        cvv = it
-                        cvvError = false
+                    val digitsOnly = it.filter { c -> c.isDigit() }
+                    if (digitsOnly.length <= 16) {
+                        cardNumber = digitsOnly
+                        cardNumberError = false
                     }
                 },
-                label = { Text("CVV") },
-                modifier = Modifier.weight(1f),
-                isError = cvvError,
+                label = { Text("Numéro de carte") },
+                modifier = Modifier.fillMaxWidth(),
+                isError = cardNumberError,
                 supportingText = {
                     when {
-                        cvvError && cvv.isEmpty() -> Text("Ce champ est obligatoire")
-                        cvvError -> Text("3 chiffres requis")
+                        cardNumberError && cardNumber.isEmpty() -> Text("Ce champ est obligatoire")
+                        cardNumberError -> Text("Numéro de carte invalide (16 chiffres)")
                         else -> {}
                     }
                 },
+                visualTransformation = CreditCardFilter,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
-        }
 
-        Spacer(modifier = Modifier.height(24.dp))
+            Row(modifier = Modifier.fillMaxWidth()) {
+                OutlinedTextField(
+                    value = expiryDate,
+                    onValueChange = {
+                        val digitsOnly = it.filter { c -> c.isDigit() }
+                        expiryDate = when {
+                            digitsOnly.length <= 2 -> digitsOnly
+                            digitsOnly.length <= 4 -> "${digitsOnly.take(2)}/${digitsOnly.drop(2)}"
+                            else -> expiryDate
+                        }
+                        expiryDateError = false
+                    },
+                    label = { Text("Date d'expiration (MM/AA)") },
+                    modifier = Modifier.weight(1f),
+                    isError = expiryDateError,
+                    supportingText = {
+                        when {
+                            expiryDateError && expiryDate.isEmpty() -> Text("Ce champ est obligatoire")
+                            expiryDateError -> Text("Format invalide ou carte expirée")
+                            else -> {}
+                        }
+                    },
+                    visualTransformation = ExpiryDateFilter,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
 
-        Button(
-            onClick = {
-                // Validation
-                nameError = name.isBlank()
-                addressError = address.isBlank()
-                cardNumberError = cardNumber.length != 16
-                expiryDateError = !isValidExpiryDate(expiryDate)
-                cvvError = cvv.length != 3
+                Spacer(modifier = Modifier.width(8.dp))
 
-                if (!nameError && !addressError && !cardNumberError &&
-                    !expiryDateError && !cvvError
-                ) {
-                    cartViewModel.validateOrder(
-                        userId = userId,
-                        name = name,
-                        address = address
-                    ) {
-                        navController.popBackStack(Routes.ClientHome, false)
+                OutlinedTextField(
+                    value = cvv,
+                    onValueChange = {
+                        if (it.length <= 3 && it.all { c -> c.isDigit() }) {
+                            cvv = it
+                            cvvError = false
+                        }
+                    },
+                    label = { Text("CVV") },
+                    modifier = Modifier.weight(1f),
+                    isError = cvvError,
+                    supportingText = {
+                        when {
+                            cvvError && cvv.isEmpty() -> Text("Ce champ est obligatoire")
+                            cvvError -> Text("3 chiffres requis")
+                            else -> {}
+                        }
+                    },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Button(
+                onClick = {
+                    nameError = name.isBlank()
+                    addressError = address.isBlank()
+                    cardNumberError = cardNumber.length != 16
+                    expiryDateError = !isValidExpiryDate(expiryDate)
+                    cvvError = cvv.length != 3
+
+                    if (!nameError && !addressError && !cardNumberError && !expiryDateError && !cvvError) {
+                        cartViewModel.validateOrder(
+                            userId = userId,
+                            name = name,
+                            address = address
+                        ) {
+                            navController.popBackStack(Routes.ClientHome, false)
+                        }
                     }
-                }
-            },
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text("Confirmer la commande")
-        }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0288D1))
+            ) {
+                Text("Confirmer la commande", color = Color.White)
+            }
 
-        errorMessage?.let { message ->
-            Text(
-                text = message,
-                color = MaterialTheme.colorScheme.error,
-                modifier = Modifier.padding(8.dp)
-            )
+            errorMessage?.let {
+                Text(
+                    text = it,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(8.dp)
+                )
+            }
         }
     }
 }
-
 val CreditCardFilter = VisualTransformation { text ->
     val original = text.text.take(16)
     val formatted = StringBuilder()

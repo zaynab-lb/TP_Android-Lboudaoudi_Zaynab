@@ -65,6 +65,18 @@ fun HomeScreen(
             Text("Se déconnecter", color = Color.White)
         }
 
+        Button(
+            onClick = {
+                navController.navigate(Routes.OrdersScreen)
+            },
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50))
+        ) {
+            Text("Mes commandes", color = Color.White)
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
 
         // Filtres par catégorie
         CategoryFilter(

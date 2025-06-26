@@ -20,4 +20,30 @@ class FirebaseOrderService @Inject constructor(
             throw e
         }
     }
+
+    suspend fun getUserOrders(userId: String): List<Order> {
+        return try {
+            firestore.collection("orders")
+                .whereEqualTo("userId", userId)
+                .get()
+                .await()
+                .toObjects(Order::class.java)
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+    suspend fun updateOrderStatus(orderId: String, newStatus: String) {
+        try {
+            firestore.collection("orders")
+                .document(orderId)
+                .update("status", newStatus)
+                .await()
+            Log.d("Firebase", "Statut de la commande mis à jour")
+        } catch (e: Exception) {
+            Log.e("Firebase", "Erreur lors de la mise à jour du statut", e)
+            throw e
+        }
+    }
+
 }

@@ -15,9 +15,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.projetmobile.data.Entities.Product
+import com.example.projetmobile.nav.Routes.OrdersScreen
 import com.example.projetmobile.ui.cart.CartViewModel
 import com.example.projetmobile.ui.cart.screens.CartScreen
+import com.example.projetmobile.ui.order.OrderViewModel
 import com.example.projetmobile.ui.order.screens.CheckoutScreen
+import com.example.projetmobile.ui.order.screens.OrdersScreen
 import com.example.projetmobile.ui.product.ProductViewModel
 import com.example.projetmobile.ui.product.component.DetailsScreen
 import com.example.projetmobile.ui.product.screens.HomeScreen
@@ -34,6 +37,7 @@ object Routes {
     const val ProductDetails = "productDetails"
     const val CartScreen = "cart"
     const val Checkout = "checkout"
+    const val OrdersScreen = "orders"
 }
 @Composable
 fun AppNavigation(productViewModel: ProductViewModel) {
@@ -116,6 +120,20 @@ fun AppNavigation(productViewModel: ProductViewModel) {
             CheckoutScreen(
                 cartViewModel = cartViewModel,
                 productViewModel = productViewModel,
+                navController = navController
+            )
+        }
+
+        composable(Routes.OrdersScreen) {
+            val orderViewModel: OrderViewModel = hiltViewModel()
+            val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+
+            LaunchedEffect(Unit) {
+                orderViewModel.loadUserOrders(userId)
+            }
+
+            OrdersScreen(
+                orderViewModel = orderViewModel,
                 navController = navController
             )
         }

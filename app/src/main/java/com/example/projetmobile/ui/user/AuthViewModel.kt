@@ -43,4 +43,13 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+    fun updateUser(user: User, onResult: () -> Unit) {
+        viewModelScope.launch {
+            val userId = user.id
+            authService.updateUser(userId, user)
+            onResult()
+        }
+    }
+
+
 }

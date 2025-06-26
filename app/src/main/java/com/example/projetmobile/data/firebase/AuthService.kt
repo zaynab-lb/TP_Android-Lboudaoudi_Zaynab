@@ -51,4 +51,13 @@ class AuthService @Inject constructor(
         }
     }
 
+    suspend fun updateUser(userId: String, updatedUser: User) {
+        try {
+            firestore.collection("users").document(userId).set(updatedUser).await()
+        } catch (e: Exception) {
+            Log.e("AuthService", "Erreur lors de la mise à jour de l'utilisateur", e)
+        }
+    }
+
+
 }

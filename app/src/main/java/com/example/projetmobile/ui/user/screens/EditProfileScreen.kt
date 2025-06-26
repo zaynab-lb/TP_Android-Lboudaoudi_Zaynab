@@ -5,6 +5,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -12,14 +13,21 @@ import com.example.projetmobile.data.Entities.User
 import com.example.projetmobile.ui.user.AuthViewModel
 
 @Composable
-fun EditProfileScreen(navController: NavController, authViewModel: AuthViewModel = hiltViewModel()) {
+fun EditProfileScreen(
+    navController: NavController,
+    authViewModel: AuthViewModel = hiltViewModel()
+) {
     var user by remember { mutableStateOf<User?>(null) }
 
     var nom by remember { mutableStateOf("") }
     var prenom by remember { mutableStateOf("") }
     var age by remember { mutableStateOf("") }
 
+    var newPassword by remember { mutableStateOf("") }
+    var currentPassword by remember { mutableStateOf("") }
+
     var isLoading by remember { mutableStateOf(true) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(Unit) {
         authViewModel.loadCurrentUser {
@@ -65,18 +73,53 @@ fun EditProfileScreen(navController: NavController, authViewModel: AuthViewModel
                 modifier = Modifier.fillMaxWidth()
             )
 
+            OutlinedTextField(
+                value = newPassword,
+                onValueChange = { newPassword = it },
+                label = { Text("Nouveau mot de passe (facultatif)") },
+                modifier = Modifier.fillMaxWidth(),
+                visualTransformation = PasswordVisualTransformation()
+            )
+
+            OutlinedTextField(
+                value = currentPassword,
+                onValueChange = { currentPassword = it },
+                label = { Text("Mot de passe actuel *") },
+                modifier = Modifier.fillMaxWidth(),
+                visualTransformation = PasswordVisualTransformation()
+            )
+
+            errorMessage?.let {
+                Text(text = it, color = MaterialTheme.colorScheme.error)
+            }
+
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
                 onClick = {
+                    if (currentPassword.isBlank()) {
+                        errorMessage = "Le mot de passe actuel est requis."
+                        return@Button
+                    }
+
                     val updatedUser = user?.copy(
                         nom = nom,
                         prenom = prenom,
                         age = age.toIntOrNull() ?: 0
                     )
+
                     if (updatedUser != null) {
-                        authViewModel.updateUser(updatedUser) {
-                            navController.popBackStack() // Retour à l’écran précédent
+                        authViewModel.updatePassword(
+                            currentPassword,
+                            if (newPassword.isNotBlank()) newPassword else null
+                        ) { success ->
+                            if (success) {
+                                authViewModel.updateUser(updatedUser) {
+                                    navController.popBackStack()
+                                }
+                            } else {
+                                errorMessage = "Erreur lors de la mise à jour du mot de passe"
+                            }
                         }
                     }
                 },

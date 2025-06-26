@@ -51,5 +51,14 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+    fun updatePassword(currentPassword: String, newPassword: String?, onResult: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            val success = authService.updatePassword(currentPassword, newPassword)
+            onResult(success)
+        }
+    }
+
+
+
 
 }

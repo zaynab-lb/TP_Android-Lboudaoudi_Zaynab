@@ -59,5 +59,28 @@ class AuthService @Inject constructor(
         }
     }
 
+    suspend fun updatePassword(currentPassword: String, newPassword: String?): Boolean {
+        val user = auth.currentUser ?: return false
+        val email = user.email ?: return false
+
+        return try {
+            // Re-authentifier l'utilisateur
+            val credential = com.google.firebase.auth.EmailAuthProvider.getCredential(email, currentPassword)
+            user.reauthenticate(credential).await()
+
+            // Mettre à jour le mot de passe
+            if (!newPassword.isNullOrBlank()) {
+                user.updatePassword(newPassword).await()
+            }
+
+            true
+        } catch (e: Exception) {
+            Log.e("AuthService", "Erreur mise à jour mot de passe : ${e.message}", e)
+            false
+        }
+    }
+
+
+
 
 }

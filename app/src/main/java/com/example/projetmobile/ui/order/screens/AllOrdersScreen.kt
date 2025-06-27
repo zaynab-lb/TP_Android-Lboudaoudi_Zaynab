@@ -4,25 +4,19 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.AttachMoney
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Receipt
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.projetmobile.ui.menu.component.AppMenu
 import com.example.projetmobile.ui.order.OrderViewModel
 import com.example.projetmobile.ui.user.AuthViewModel
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,6 +28,7 @@ fun AllOrdersScreen(
     val orders by orderViewModel.orders.collectAsState()
     val isLoading by orderViewModel.isLoading.collectAsState()
     val statuses = listOf("En attente", "En cours", "Livrée", "Annulée")
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         orderViewModel.loadAllOrders()
@@ -42,11 +37,7 @@ fun AllOrdersScreen(
     Scaffold(
         topBar = {
             Column {
-                AppMenu(
-                    navController = navController,
-                    authViewModel = authViewModel,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                AppMenu(navController = navController, authViewModel = authViewModel, modifier = Modifier.fillMaxWidth())
             }
         },
         containerColor = Color(0xFFE1F5FE)
@@ -62,11 +53,11 @@ fun AllOrdersScreen(
             }
         } else {
             if (orders.isEmpty()) {
-                Text(
-                    "Aucune commande trouvée.",
-                    modifier = Modifier.padding(padding).padding(16.dp)
-                )
+                Text("Aucune commande trouvée.", modifier = Modifier.padding(padding).padding(16.dp))
             } else {
+                // Gérer l'état d'ouverture par commande avec un map (id -> expanded)
+                val expandedStates = remember { mutableStateMapOf<String, Boolean>() }
+
                 LazyColumn(
                     modifier = Modifier
                         .padding(padding)
@@ -75,7 +66,7 @@ fun AllOrdersScreen(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(orders) { order ->
-                        var expanded by remember { mutableStateOf(false) }
+                        val expanded = expandedStates.getOrElse(order.orderId) { false }
 
                         Card(
                             modifier = Modifier.fillMaxWidth(),
@@ -83,18 +74,23 @@ fun AllOrdersScreen(
                             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {
-                                OrderRow(icon = Icons.Default.Receipt, label = "Commande ID", value = order.orderId)
-                                OrderRow(icon = Icons.Default.Person, label = "Utilisateur ID", value = order.userId)
-                                OrderRow(icon = Icons.Default.AccountCircle, label = "Client", value = order.userName)
-                                OrderRow(icon = Icons.Default.LocationOn, label = "Adresse", value = order.userAddress)
-                                OrderRow(icon = Icons.Default.AttachMoney, label = "Total", value = "${order.totalPrice} DH")
-                                OrderRow(icon = Icons.Default.DateRange, label = "Date", value = order.date.toDate().toString())
-                                OrderRow(icon = Icons.Default.Info, label = "Statut", value = order.status)
+                                OrderRow(icon = Icons.Default.Receipt, value = order.orderId)
+                                OrderRow(icon = Icons.Default.Person, value = order.userId)
+                                OrderRow(icon = Icons.Default.AccountCircle, value = order.userName)
+                                OrderRow(icon = Icons.Default.LocationOn, value = order.userAddress)
+                                OrderRow(icon = Icons.Default.AttachMoney, value = "${order.totalPrice} DH")
+                                OrderRow(icon = Icons.Default.DateRange, value = order.date.toDate().toString())
+
+                                Spacer(modifier = Modifier.height(8.dp))
+
+                                OrderStatus(status = order.status)
 
                                 Spacer(modifier = Modifier.height(8.dp))
 
                                 TextButton(
-                                    onClick = { expanded = true },
+                                    onClick = {
+                                        expandedStates[order.orderId] = !expanded
+                                    },
                                     colors = ButtonDefaults.textButtonColors(contentColor = Color(0xFF0288D1))
                                 ) {
                                     Text("Changer le statut")
@@ -102,18 +98,32 @@ fun AllOrdersScreen(
 
                                 DropdownMenu(
                                     expanded = expanded,
-                                    onDismissRequest = { expanded = false }
+                                    onDismissRequest = { expandedStates[order.orderId] = false },
+                                    containerColor = Color(0xFFBBDEFB) // fond bleu clair
                                 ) {
                                     statuses.forEach { status ->
                                         DropdownMenuItem(
-                                            text = { Text(status) },
+                                            text = {
+                                                Text(
+                                                    text = status,
+                                                    color = if (status == order.status) Color(0xFF0D47A1) else Color(0xFF1565C0), // texte bleu foncé
+                                                    style = if (status == order.status) MaterialTheme.typography.bodyMedium.copy(
+                                                        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+                                                    ) else MaterialTheme.typography.bodyMedium
+                                                )
+                                            },
                                             onClick = {
-                                                expanded = false
-                                                orderViewModel.updateOrderStatus(order.orderId, status)
+                                                expandedStates[order.orderId] = false
+                                                coroutineScope.launch {
+                                                    orderViewModel.updateOrderStatus(order.orderId, status)
+                                                    orderViewModel.loadAllOrders()
+                                                }
                                             }
                                         )
                                     }
                                 }
+
+                            }
                             }
                         }
                     }
@@ -121,10 +131,9 @@ fun AllOrdersScreen(
             }
         }
     }
-}
 
 @Composable
-fun OrderRow(icon: ImageVector, label: String, value: String) {
+fun OrderRow(icon: androidx.compose.ui.graphics.vector.ImageVector, value: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -133,12 +142,40 @@ fun OrderRow(icon: ImageVector, label: String, value: String) {
     ) {
         Icon(
             imageVector = icon,
-            contentDescription = label,
+            contentDescription = null,
             tint = Color(0xFF0288D1),
             modifier = Modifier.size(20.dp)
         )
         Spacer(modifier = Modifier.width(8.dp))
-        Text(text = "$label : ", style = MaterialTheme.typography.bodyMedium)
-        Text(text = value, style = MaterialTheme.typography.bodySmall, color = Color.DarkGray)
+        Text(text = value, style = MaterialTheme.typography.bodyMedium)
+    }
+}
+
+@Composable
+fun OrderStatus(status: String) {
+    val (icon, color, label) = when (status) {
+        "En attente" -> Triple(Icons.Default.Info, Color(0xFFFFA000), "En attente") // orange
+        "En cours" -> Triple(Icons.Default.Info, Color(0xFF0288D1), "En cours") // bleu
+        "Livrée" -> Triple(Icons.Default.CheckCircle, Color(0xFF388E3C), "Livrée") // vert
+        "Annulée" -> Triple(Icons.Default.Cancel, Color(0xFFD32F2F), "Annulée") // rouge
+        else -> Triple(Icons.Default.Help, Color.Gray, status)
+    }
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(vertical = 4.dp)
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = label,
+            tint = color,
+            modifier = Modifier.size(20.dp)
+        )
+        Spacer(modifier = Modifier.width(6.dp))
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyMedium,
+            color = color
+        )
     }
 }

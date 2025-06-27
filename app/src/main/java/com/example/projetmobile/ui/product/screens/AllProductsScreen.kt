@@ -51,28 +51,51 @@ fun AllProductsScreen(
     if (showDialog && productToDelete != null) {
         AlertDialog(
             onDismissRequest = { showDialog = false },
-            title = { Text("Confirmation") },
-            text = { Text("Voulez-vous vraiment supprimer ce produit ?") },
+            title = {
+                Text(
+                    "Confirmation",
+                    style = MaterialTheme.typography.titleLarge.copy(color = Color(0xFF0288D1))
+                )
+            },
+            text = {
+                Text(
+                    "Voulez-vous vraiment supprimer ce produit ?",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            },
             confirmButton = {
-                TextButton(onClick = {
-                    coroutineScope.launch {
-                        productViewModel.deleteProduct(productToDelete!!.productID)
-                        showDialog = false
-                        productToDelete = null
-                        loadProducts()
-                    }
-                }) {
-                    Text("Supprimer", color = MaterialTheme.colorScheme.error)
+                TextButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            productViewModel.deleteProduct(productToDelete!!.productID)
+                            showDialog = false
+                            productToDelete = null
+                            loadProducts()
+                        }
+                    },
+                    colors = ButtonDefaults.textButtonColors(
+                        contentColor = MaterialTheme.colorScheme.error
+                    )
+                ) {
+                    Text("Supprimer", style = MaterialTheme.typography.bodyLarge)
                 }
             },
             dismissButton = {
-                TextButton(onClick = {
-                    showDialog = false
-                    productToDelete = null
-                }) {
-                    Text("Annuler")
+                TextButton(
+                    onClick = {
+                        showDialog = false
+                        productToDelete = null
+                    },
+                    colors = ButtonDefaults.textButtonColors(
+                        contentColor = MaterialTheme.colorScheme.primary
+                    )
+                ) {
+                    Text("Annuler", style = MaterialTheme.typography.bodyLarge)
                 }
-            }
+            },
+            shape = RoundedCornerShape(20.dp),
+            containerColor = Color(0xFFE1F5FE),
+            tonalElevation = 8.dp
         )
     }
 

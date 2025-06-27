@@ -71,4 +71,12 @@ class ProductViewModel @Inject constructor( private val repository: ProductRepos
         }
     }
 
+    fun getProducts(callback: (List<Product>) -> Unit) {
+        viewModelScope.launch {
+            val result = repository.getProducts()
+            callback(result)
+        }
+    }
+
+
 }

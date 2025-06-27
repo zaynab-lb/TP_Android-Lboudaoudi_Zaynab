@@ -53,6 +53,15 @@ fun AdminHomeScreen(navController: NavController, viewModel: AuthViewModel = hil
             Text("Profil")
         }
 
+        Button(
+            onClick = { navController.navigate("allProducts") },
+            modifier = Modifier.padding(top = 16.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0288D1))
+        ) {
+            Text("Voir tous les produits", color = Color.White)
+        }
+
+
     }
 }
 

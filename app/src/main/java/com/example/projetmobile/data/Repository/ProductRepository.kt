@@ -30,4 +30,12 @@ class ProductRepository @Inject constructor() {
         }
     }
 
+    suspend fun updateProduct(product: Product) {
+        db.collection("products")
+            .document(product.productID)
+            .set(product)
+            .await()
+    }
+
+
 }

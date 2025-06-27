@@ -78,5 +78,12 @@ class ProductViewModel @Inject constructor( private val repository: ProductRepos
         }
     }
 
+    fun updateProduct(product: Product) {
+        viewModelScope.launch {
+            repository.updateProduct(product)
+        }
+    }
+
+
 
 }

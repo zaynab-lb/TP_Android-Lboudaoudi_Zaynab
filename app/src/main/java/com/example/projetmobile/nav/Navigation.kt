@@ -31,6 +31,7 @@ import com.example.projetmobile.ui.user.screens.SignupScreen
 import com.example.projetmobile.ui.user.screens.UserInfoScreen
 import com.google.firebase.auth.FirebaseAuth
 import com.example.projetmobile.ui.product.screens.AllProductsScreen
+import com.example.projetmobile.ui.product.screens.EditProductScreen
 
 object Routes {
     const val Home = "home"
@@ -157,6 +158,15 @@ fun AppNavigation(productViewModel: ProductViewModel) {
                 navController = navController
             )
         }
+
+        composable(
+            "editProduct/{productId}",
+            arguments = listOf(navArgument("productId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val productId = backStackEntry.arguments?.getString("productId") ?: ""
+            EditProductScreen(productId = productId, navController = navController)
+        }
+
 
 
     }

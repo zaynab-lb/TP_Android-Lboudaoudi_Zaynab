@@ -90,6 +90,17 @@ class AuthService @Inject constructor(
         }
     }
 
-
+    suspend fun updateUserRole(userId: String, newRole: String): Boolean {
+        return try {
+            firestore.collection("users")
+                .document(userId)
+                .update("role", newRole)
+                .await()
+            true
+        } catch (e: Exception) {
+            Log.e("AuthService", "Erreur mise à jour rôle : ", e)
+            false
+        }
+    }
 
 }

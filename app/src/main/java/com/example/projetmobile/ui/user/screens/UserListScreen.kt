@@ -64,11 +64,41 @@ fun UserListScreen(
                     }
                 } else {
                     items(filteredUsers) { user ->
+                        var expanded by remember { mutableStateOf(false) }
+                        var selectedUserRole by remember { mutableStateOf(user.role) }
+
                         Card(modifier = Modifier.fillMaxWidth()) {
                             Column(modifier = Modifier.padding(16.dp)) {
                                 Text("Nom : ${user.nom} ${user.prenom}")
                                 Text("Email : ${user.email}")
-                                Text("Rôle : ${user.role}")
+                                Text("Rôle actuel : $selectedUserRole")
+
+                                Box {
+                                    Button(onClick = { expanded = true }) {
+                                        Text("Changer rôle")
+                                    }
+
+                                    DropdownMenu(
+                                        expanded = expanded,
+                                        onDismissRequest = { expanded = false }
+                                    ) {
+                                        listOf("client", "admin").forEach { roleOption ->
+                                            DropdownMenuItem(
+                                                text = { Text(roleOption) },
+                                                onClick = {
+                                                    expanded = false
+                                                    if (roleOption != user.role) {
+                                                        selectedUserRole = roleOption
+                                                        val updatedUser = user.copy(role = roleOption)
+                                                        viewModel.updateUser(updatedUser) {
+                                                            viewModel.loadAllUsers { users = it }
+                                                        }
+                                                    }
+                                                }
+                                            )
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

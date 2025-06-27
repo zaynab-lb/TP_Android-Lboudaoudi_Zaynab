@@ -67,4 +67,11 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+    fun updateUserRole(userId: String, newRole: String, onResult: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            val success = authService.updateUserRole(userId, newRole)
+            onResult(success)
+        }
+    }
+
 }

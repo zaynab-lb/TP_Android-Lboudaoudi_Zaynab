@@ -21,17 +21,37 @@ class FirebaseOrderService @Inject constructor(
         }
     }
 
-    suspend fun getUserOrders(userId: String): List<Order> {
+    suspend fun getAllOrders(): List<Order> {
         return try {
-            firestore.collection("orders")
-                .whereEqualTo("userId", userId)
+            val snapshot = firestore.collection("orders")
                 .get()
                 .await()
-                .toObjects(Order::class.java)
+
+            snapshot.documents.map { doc ->
+                val order = doc.toObject(Order::class.java)
+                order?.copy(orderId = doc.id) ?: Order(orderId = doc.id)
+            }
         } catch (e: Exception) {
             throw e
         }
     }
+
+    suspend fun getUserOrders(userId: String): List<Order> {
+        return try {
+            val snapshot = firestore.collection("orders")
+                .whereEqualTo("userId", userId)
+                .get()
+                .await()
+
+            snapshot.documents.map { doc ->
+                val order = doc.toObject(Order::class.java)
+                order?.copy(orderId = doc.id) ?: Order(orderId = doc.id)
+            }
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
 
     suspend fun updateOrderStatus(orderId: String, newStatus: String) {
         try {
@@ -45,5 +65,6 @@ class FirebaseOrderService @Inject constructor(
             throw e
         }
     }
+
 
 }

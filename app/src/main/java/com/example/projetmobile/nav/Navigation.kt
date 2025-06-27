@@ -19,6 +19,7 @@ import com.example.projetmobile.nav.Routes.OrdersScreen
 import com.example.projetmobile.ui.cart.CartViewModel
 import com.example.projetmobile.ui.cart.screens.CartScreen
 import com.example.projetmobile.ui.order.OrderViewModel
+import com.example.projetmobile.ui.order.screens.AllOrdersScreen
 import com.example.projetmobile.ui.order.screens.CheckoutScreen
 import com.example.projetmobile.ui.order.screens.OrdersScreen
 import com.example.projetmobile.ui.product.ProductViewModel
@@ -44,6 +45,7 @@ object Routes {
     const val OrdersScreen = "orders"
     const val UserInfo = "userInfo"
     const val EditProfile = "editProfile"
+    const val AllOrders = "allOrders"
 }
 @Composable
 fun AppNavigation(productViewModel: ProductViewModel) {
@@ -167,6 +169,11 @@ fun AppNavigation(productViewModel: ProductViewModel) {
             EditProductScreen(productId = productId, navController = navController)
         }
 
+
+        composable(Routes.AllOrders) {
+            val orderViewModel: OrderViewModel = hiltViewModel()
+            AllOrdersScreen(orderViewModel = orderViewModel, navController = navController)
+        }
 
 
     }

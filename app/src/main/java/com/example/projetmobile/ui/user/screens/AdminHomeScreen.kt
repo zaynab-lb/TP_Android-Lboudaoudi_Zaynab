@@ -61,6 +61,15 @@ fun AdminHomeScreen(navController: NavController, viewModel: AuthViewModel = hil
             Text("Voir tous les produits", color = Color.White)
         }
 
+        Button(
+            onClick = { navController.navigate(Routes.AllOrders) },
+            modifier = Modifier.padding(top = 16.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50))
+        ) {
+            Text("Voir les commandes clients", color = Color.White)
+        }
+
+
 
     }
 }

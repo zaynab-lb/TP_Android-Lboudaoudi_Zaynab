@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -32,62 +34,99 @@ fun AppMenu(
     }
 
     user?.let {
-        Surface(
+        Column(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(12.dp)
-                .shadow(8.dp, RoundedCornerShape(24.dp)),
-            color = Color(0xFFE1F5FE),
-            shape = RoundedCornerShape(24.dp)
+                .padding(top = 12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Row(
+            // Nom de la boutique stylisé
+            Text(
+                text = "Perla",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 10.dp, horizontal = 16.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                color = Color(0xFF6D4C41),
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
+
+            // Barre de menu avec icônes
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp)
+                    .shadow(2.dp, RoundedCornerShape(24.dp)),
+                color = Color(0xFFE1F5FE),
+                shape = RoundedCornerShape(24.dp)
             ) {
-                NavigationIconButton(
-                    icon = Icons.Default.Home,
-                    contentDescription = "Accueil",
-                    onClick = {
-                        navController.navigate(
-                            if (it.role == "admin") Routes.AdminHome else Routes.ClientHome
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 10.dp, horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    NavigationIconButton(
+                        icon = Icons.Default.Home,
+                        contentDescription = "Accueil",
+                        onClick = {
+                            navController.navigate(
+                                if (it.role == "admin") Routes.AdminHome else Routes.ClientHome
+                            )
+                        }
+                    )
+
+                    if (it.role == "client") {
+                        NavigationIconButton(
+                            icon = Icons.Default.ShoppingCart,
+                            contentDescription = "Panier",
+                            onClick = { navController.navigate(Routes.CartScreen) }
+                        )
+                        NavigationIconButton(
+                            icon = Icons.Default.List,
+                            contentDescription = "Commandes",
+                            onClick = { navController.navigate(Routes.OrdersScreen) }
                         )
                     }
-                )
 
-                if (it.role == "client") {
+                    if (it.role == "admin") {
+                        NavigationIconButton(
+                            icon = Icons.Default.Inventory,
+                            contentDescription = "Produits",
+                            onClick = { navController.navigate("allProducts") }
+                        )
+                        NavigationIconButton(
+                            icon = Icons.Default.Receipt,
+                            contentDescription = "Commandes",
+                            onClick = { navController.navigate(Routes.AllOrders) }
+                        )
+                        NavigationIconButton(
+                            icon = Icons.Default.Group,
+                            contentDescription = "Utilisateurs",
+                            onClick = { navController.navigate("userList") }
+                        )
+                    }
+
                     NavigationIconButton(
-                        icon = Icons.Default.ShoppingCart,
-                        contentDescription = "Panier",
-                        onClick = { navController.navigate(Routes.CartScreen) }
+                        icon = Icons.Default.Person,
+                        contentDescription = "Profil",
+                        onClick = { navController.navigate(Routes.UserInfo) }
                     )
 
                     NavigationIconButton(
-                        icon = Icons.Default.List,
-                        contentDescription = "Commandes",
-                        onClick = { navController.navigate(Routes.OrdersScreen) }
+                        icon = Icons.Default.ExitToApp,
+                        contentDescription = "Déconnexion",
+                        tint = MaterialTheme.colorScheme.error,
+                        onClick = {
+                            authViewModel.logout()
+                            navController.navigate(Routes.Login) {
+                                popUpTo(0) { inclusive = true }
+                            }
+                        }
                     )
                 }
-
-                NavigationIconButton(
-                    icon = Icons.Default.Person,
-                    contentDescription = "Profil",
-                    onClick = { navController.navigate(Routes.UserInfo) }
-                )
-
-                NavigationIconButton(
-                    icon = Icons.Default.ExitToApp,
-                    contentDescription = "Déconnexion",
-                    tint = MaterialTheme.colorScheme.error,
-                    onClick = {
-                        authViewModel.logout()
-                        navController.navigate(Routes.Login) {
-                            popUpTo(0) { inclusive = true }
-                        }
-                    }
-                )
             }
         }
     } ?: Box(

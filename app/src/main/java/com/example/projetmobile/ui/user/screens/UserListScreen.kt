@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.projetmobile.data.Entities.User
+import com.example.projetmobile.ui.menu.component.AppMenu
 import com.example.projetmobile.ui.user.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,7 +30,14 @@ fun UserListScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Liste des Utilisateurs") })
+            Column {
+                AppMenu(
+                    navController = navController,
+                    authViewModel = viewModel,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                TopAppBar(title = { Text("Liste Utilisateur") })
+            }
         }
     ) { paddingValues ->
         Column(

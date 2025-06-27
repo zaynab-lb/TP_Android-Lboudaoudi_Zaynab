@@ -11,6 +11,8 @@ import androidx.navigation.NavController
 import com.example.projetmobile.data.Entities.Product
 import com.example.projetmobile.ui.product.ProductViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.projetmobile.ui.menu.component.AppMenu
+import com.example.projetmobile.ui.user.AuthViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -18,6 +20,7 @@ import kotlinx.coroutines.launch
 fun EditProductScreen(
     productId: String,
     navController: NavController,
+    authViewModel: AuthViewModel = hiltViewModel(),
     viewModel: ProductViewModel = hiltViewModel()
 ) {
     var product by remember { mutableStateOf<Product?>(null) }
@@ -40,9 +43,20 @@ fun EditProductScreen(
             "Collier", "Bracelet", "Bague", "Boucles d’oreilles", "Montre", "Parure", "Cheville"
         )
 
+
         Scaffold(
-            topBar = { TopAppBar(title = { Text("Modifier Produit") }) }
-        ) { padding ->
+            topBar = {
+                Column {
+                    AppMenu(
+                        navController = navController,
+                        authViewModel = authViewModel,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    TopAppBar(title = { Text("Modifier Produit") })
+                }
+            }
+        )
+        { padding ->
             Column(
                 modifier = Modifier
                     .padding(padding)

@@ -10,12 +10,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.projetmobile.ui.menu.component.AppMenu
 import com.example.projetmobile.ui.order.OrderViewModel
+import com.example.projetmobile.ui.user.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllOrdersScreen(
     orderViewModel: OrderViewModel = hiltViewModel(),
+    authViewModel: AuthViewModel = hiltViewModel(),
     navController: NavController
 ) {
     val orders by orderViewModel.orders.collectAsState()
@@ -27,7 +30,16 @@ fun AllOrdersScreen(
     }
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Toutes les commandes") }) }
+        topBar = {
+            Column {
+                AppMenu(
+                    navController = navController,
+                    authViewModel = authViewModel,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                TopAppBar(title = { Text("Liste Commandes") })
+            }
+        }
     ) { padding ->
         if (isLoading) {
             Box(

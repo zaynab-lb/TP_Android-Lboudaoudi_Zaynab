@@ -9,16 +9,20 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.projetmobile.data.Entities.Product
+import com.example.projetmobile.ui.menu.component.AppMenu
 import com.example.projetmobile.ui.product.ProductViewModel
+import com.example.projetmobile.ui.user.AuthViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllProductsScreen(
     productViewModel: ProductViewModel,
+    authViewModel: AuthViewModel = hiltViewModel(),
     navController: NavController
 ) {
     var products by remember { mutableStateOf<List<Product>>(emptyList()) }
@@ -71,9 +75,17 @@ fun AllProductsScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Tous les Produits") })
+            Column {
+                AppMenu(
+                    navController = navController,
+                    authViewModel = authViewModel,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                TopAppBar(title = { Text("Liste Produit") })
+            }
         }
-    ) { paddingValues ->
+    )
+    { paddingValues ->
         Box(
             modifier = Modifier
                 .padding(paddingValues)

@@ -53,4 +53,22 @@ class OrderViewModel @Inject constructor(
         }
     }
 
+    fun updateOrderStatus(orderId: String, newStatus: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val updatedOrder = orderService.updateOrderStatus(orderId, newStatus)
+
+                // Mise à jour de l'état local
+                _orders.value = _orders.value.map { order ->
+                    if (order.orderId == orderId) updatedOrder else order
+                }
+            } catch (e: Exception) {
+                _error.value = "Erreur lors de la mise à jour du statut"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
 }

@@ -53,18 +53,26 @@ class FirebaseOrderService @Inject constructor(
     }
 
 
-    suspend fun updateOrderStatus(orderId: String, newStatus: String) {
+    suspend fun updateOrderStatus(orderId: String, newStatus: String): Order {
         try {
             firestore.collection("orders")
                 .document(orderId)
                 .update("status", newStatus)
                 .await()
-            Log.d("Firebase", "Statut de la commande mis à jour")
+
+            // Récupérer l'ordre mis à jour
+            val updatedDoc = firestore.collection("orders")
+                .document(orderId)
+                .get()
+                .await()
+
+            return updatedDoc.toObject(Order::class.java)?.copy(orderId = orderId)
+                ?: throw Exception("Order not found")
         } catch (e: Exception) {
-            Log.e("Firebase", "Erreur lors de la mise à jour du statut", e)
             throw e
         }
     }
+
 
 
 }

@@ -7,6 +7,7 @@ import com.example.projetmobile.data.Entities.User
 import com.example.projetmobile.data.firebase.AuthService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @HiltViewModel
@@ -59,6 +60,11 @@ class AuthViewModel @Inject constructor(
     }
 
 
-
+    fun loadAllUsers(onResult: (List<User>) -> Unit) {
+        viewModelScope.launch {
+            val users = authService.getAllUsers()
+            onResult(users)
+        }
+    }
 
 }

@@ -71,6 +71,14 @@ fun AdminHomeScreen(navController: NavController, viewModel: AuthViewModel = hil
 
 
 
+        Button(
+            onClick = { navController.navigate("userList") },
+            modifier = Modifier.padding(top = 16.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF9C27B0))
+        ) {
+            Text("Voir les utilisateurs (Admin/Client)", color = Color.White)
+        }
+
     }
 }
 

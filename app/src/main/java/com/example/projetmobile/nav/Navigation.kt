@@ -33,6 +33,7 @@ import com.example.projetmobile.ui.user.screens.UserInfoScreen
 import com.google.firebase.auth.FirebaseAuth
 import com.example.projetmobile.ui.product.screens.AllProductsScreen
 import com.example.projetmobile.ui.product.screens.EditProductScreen
+import com.example.projetmobile.ui.user.screens.UserListScreen
 
 object Routes {
     const val Home = "home"
@@ -174,6 +175,11 @@ fun AppNavigation(productViewModel: ProductViewModel) {
             val orderViewModel: OrderViewModel = hiltViewModel()
             AllOrdersScreen(orderViewModel = orderViewModel, navController = navController)
         }
+
+        composable("userList") {
+            UserListScreen(navController = navController)
+        }
+
 
 
     }

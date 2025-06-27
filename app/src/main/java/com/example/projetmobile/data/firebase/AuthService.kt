@@ -81,6 +81,15 @@ class AuthService @Inject constructor(
     }
 
 
+    suspend fun getAllUsers(): List<User> {
+        return try {
+            firestore.collection("users").get().await().toObjects(User::class.java)
+        } catch (e: Exception) {
+            Log.e("AuthService", "Erreur récupération utilisateurs", e)
+            emptyList()
+        }
+    }
+
 
 
 }

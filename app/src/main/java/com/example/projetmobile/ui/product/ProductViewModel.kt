@@ -84,6 +84,13 @@ class ProductViewModel @Inject constructor( private val repository: ProductRepos
         }
     }
 
+    fun deleteProduct(productId: String) {
+        viewModelScope.launch {
+            repository.deleteProduct(productId)
+        }
+    }
+
+
 
 
 }

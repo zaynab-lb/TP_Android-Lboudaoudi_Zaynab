@@ -13,6 +13,7 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.projetmobile.data.Entities.Product
 import com.example.projetmobile.ui.product.ProductViewModel
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -22,12 +23,50 @@ fun AllProductsScreen(
 ) {
     var products by remember { mutableStateOf<List<Product>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
+    val coroutineScope = rememberCoroutineScope()
+
+    var showDialog by remember { mutableStateOf(false) }
+    var productToDelete by remember { mutableStateOf<Product?>(null) }
+
+    fun loadProducts() {
+        coroutineScope.launch {
+            productViewModel.getProducts { result ->
+                products = result
+                isLoading = false
+            }
+        }
+    }
 
     LaunchedEffect(Unit) {
-        productViewModel.getProducts { result ->
-            products = result
-            isLoading = false
-        }
+        loadProducts()
+    }
+
+    if (showDialog && productToDelete != null) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { Text("Confirmation") },
+            text = { Text("Voulez-vous vraiment supprimer ce produit ?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    coroutineScope.launch {
+                        productViewModel.deleteProduct(productToDelete!!.productID)
+                        showDialog = false
+                        productToDelete = null
+                        loadProducts()
+                    }
+                }) {
+                    Text("Supprimer", color = MaterialTheme.colorScheme.error)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showDialog = false
+                    productToDelete = null
+                }) {
+                    Text("Annuler")
+                }
+            }
+        )
     }
 
     Scaffold(
@@ -56,10 +95,7 @@ fun AllProductsScreen(
                             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    // Image du produit
+                                Row(modifier = Modifier.fillMaxWidth()) {
                                     Image(
                                         painter = rememberAsyncImagePainter(model = product.productImageRes),
                                         contentDescription = product.productTitle,
@@ -69,23 +105,10 @@ fun AllProductsScreen(
                                     )
 
                                     Column(modifier = Modifier.weight(1f)) {
-                                        Text(
-                                            text = product.productTitle ?: "Sans titre",
-                                            style = MaterialTheme.typography.titleMedium
-                                        )
-
+                                        Text(product.productTitle ?: "Sans titre", style = MaterialTheme.typography.titleMedium)
                                         Spacer(modifier = Modifier.height(4.dp))
-
-                                        Text(
-                                            text = "Catégorie : ${product.productCategory ?: "Non spécifiée"}",
-                                            style = MaterialTheme.typography.bodySmall
-                                        )
-
-                                        Text(
-                                            text = "Prix : ${product.productPrice} DH",
-                                            style = MaterialTheme.typography.bodySmall
-                                        )
-
+                                        Text("Catégorie : ${product.productCategory ?: "Non spécifiée"}", style = MaterialTheme.typography.bodySmall)
+                                        Text("Prix : ${product.productPrice} DH", style = MaterialTheme.typography.bodySmall)
                                         Text(
                                             text = when {
                                                 product.productQuantity == 0 -> "Rupture de stock"
@@ -102,16 +125,24 @@ fun AllProductsScreen(
                                     }
                                 }
 
-                                // Bouton Modifier
-                                Button(
-                                    onClick = {
-                                        navController.navigate("editProduct/${product.productID}")
-                                    },
-                                    modifier = Modifier
-                                        .padding(top = 12.dp)
-                                        .align(Alignment.End)
+                                Spacer(modifier = Modifier.height(12.dp))
+
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
-                                    Text("Modifier")
+                                    OutlinedButton(onClick = {
+                                        productToDelete = product
+                                        showDialog = true
+                                    }) {
+                                        Text("Supprimer")
+                                    }
+
+                                    Button(onClick = {
+                                        navController.navigate("editProduct/${product.productID}")
+                                    }) {
+                                        Text("Modifier")
+                                    }
                                 }
                             }
                         }

@@ -37,5 +37,12 @@ class ProductRepository @Inject constructor() {
             .await()
     }
 
+    suspend fun deleteProduct(productId: String) {
+        db.collection("products")
+            .document(productId)
+            .delete()
+            .await()
+    }
+
 
 }

@@ -30,13 +30,6 @@ fun ProductsList(products: List<Product>, onNavigateToDetails: (String) -> Unit)
             )
             .padding(16.dp)
     ) {
-        Text(
-            text = "Liste des Produits",
-            style = MaterialTheme.typography.headlineMedium,
-            color = Color(0xFF01579B),
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-
         LazyColumn {
             items(filteredProducts) { product ->
                 ProductItem(

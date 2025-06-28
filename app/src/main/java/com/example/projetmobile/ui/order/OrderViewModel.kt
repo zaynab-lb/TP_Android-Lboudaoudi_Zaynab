@@ -23,6 +23,10 @@ class OrderViewModel @Inject constructor(
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
+    // compteur total des commandes
+    private val _orderCount = MutableStateFlow(0)
+    val orderCount: StateFlow<Int> = _orderCount
+
     // Charge commandes d’un utilisateur (client)
     fun loadUserOrders(userId: String) {
         viewModelScope.launch {
@@ -30,8 +34,10 @@ class OrderViewModel @Inject constructor(
             try {
                 val userOrders = orderService.getUserOrders(userId)
                 _orders.value = userOrders
+                _orderCount.value = userOrders.size
             } catch (e: Exception) {
                 _error.value = "Erreur lors du chargement des commandes"
+                _orderCount.value = 0
             } finally {
                 _isLoading.value = false
             }
@@ -45,8 +51,10 @@ class OrderViewModel @Inject constructor(
             try {
                 val allOrders = orderService.getAllOrders()
                 _orders.value = allOrders
+                _orderCount.value = allOrders.size
             } catch (e: Exception) {
                 _error.value = "Erreur lors du chargement des commandes"
+                _orderCount.value = 0
             } finally {
                 _isLoading.value = false
             }

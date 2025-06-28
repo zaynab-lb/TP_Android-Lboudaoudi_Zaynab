@@ -18,6 +18,10 @@ class ProductViewModel @Inject constructor( private val repository: ProductRepos
 
     private var allProducts: List<Product> = emptyList()
 
+    //compteur total produits
+    private val _productCount = MutableStateFlow(0)
+    val productCount: StateFlow<Int> = _productCount
+
     fun handleIntent(intent: ProductIntent) {
         when (intent) {
             is ProductIntent.LoadProducts -> {
@@ -40,6 +44,7 @@ class ProductViewModel @Inject constructor( private val repository: ProductRepos
                 products = allProducts,
                 categories = allProducts.map { it.productCategory }.distinct().filterNotNull()
             )
+            _productCount.value = allProducts.size
         } catch (e: Exception) {
             _state.value =
                 ProductViewState(isLoading = false, error = e.message ?: "Error fetching products")

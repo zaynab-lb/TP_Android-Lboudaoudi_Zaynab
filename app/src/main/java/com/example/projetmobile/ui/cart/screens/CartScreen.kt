@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -94,7 +95,7 @@ fun CartScreen(
 
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.Start
+                                    modifier = Modifier.fillMaxWidth()
                                 ) {
                                     Button(
                                         onClick = {
@@ -135,18 +136,18 @@ fun CartScreen(
                                         Text("+", style = MaterialTheme.typography.titleLarge)
                                     }
 
-                                    Spacer(modifier = Modifier.width(16.dp))
+                                    Spacer(modifier = Modifier.weight(1f)) // Pousse le bouton à droite
 
-                                    OutlinedButton(
+                                    IconButton(
                                         onClick = {
                                             cartViewModel.removeItem(userId, item.product.productID)
-                                        },
-                                        shape = RoundedCornerShape(12.dp),
-                                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Red)
+                                        }
                                     ) {
-                                        Icon(Icons.Default.Delete, contentDescription = "Supprimer")
-                                        Spacer(modifier = Modifier.width(4.dp))
-                                        Text("Supprimer")
+                                        Icon(
+                                            imageVector = Icons.Default.Delete,
+                                            contentDescription = "Supprimer",
+                                            tint = MaterialTheme.colorScheme.error
+                                        )
                                     }
                                 }
                             }
@@ -164,50 +165,44 @@ fun CartScreen(
                     color = Color(0xFF0288D1),
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
-            }
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Button(
-                    onClick = {
-                        navController.navigate(Routes.ClientHome) {
-                            popUpTo(Routes.CartScreen) { inclusive = true }
-                        }
-                    },
-                    shape = RoundedCornerShape(16.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0288D1))
-                ) {
-                    Text("Continuer les achats", color = Color.White)
-                }
-
-                if (cartItems.isNotEmpty()) {
-                    Button(
-                        onClick = { cartViewModel.clearCart(userId) },
-                        shape = RoundedCornerShape(16.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-                    ) {
-                        Text("Vider le panier", color = MaterialTheme.colorScheme.onError)
-                    }
-                }
-            }
-
-            if (cartItems.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(8.dp))
-                Button(
-                    onClick = { navController.navigate(Routes.Checkout) },
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(50.dp),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0288D1))
+                        .padding(top = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    Text("Valider la commande", color = Color.White)
+                    IconButton(
+                        onClick = { cartViewModel.clearCart(userId) },
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(50.dp),
+                        colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.error),
+                        // Pas de shape pour IconButton, mais on peut wrapper si besoin
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Vider le panier",
+                            tint = MaterialTheme.colorScheme.onError,
+                            modifier = Modifier.size(28.dp)
+                        )
+                    }
+
+                    IconButton(
+                        onClick = { navController.navigate(Routes.Checkout) },
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(50.dp),
+                        colors = IconButtonDefaults.iconButtonColors(containerColor = Color(0xFF0288D1))
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = "Valider la commande",
+                            tint = Color.White,
+                            modifier = Modifier.size(28.dp)
+                        )
+                    }
                 }
-                Spacer(modifier = Modifier.height(8.dp)) // évite d'être collé à la barre système
             }
         }
     }

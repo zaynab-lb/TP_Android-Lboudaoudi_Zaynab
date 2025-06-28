@@ -159,6 +159,22 @@ fun CheckoutScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
+
+            Button(
+                onClick = { navController.navigate(Routes.CartScreen) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+            ) {
+                Text("Annuler", color = MaterialTheme.colorScheme.onError)
+            }
+
+
+
+            Spacer(modifier = Modifier.height(8.dp))
+
             Button(
                 onClick = {
                     nameError = name.isBlank()
@@ -196,6 +212,7 @@ fun CheckoutScreen(
         }
     }
 }
+
 val CreditCardFilter = VisualTransformation { text ->
     val original = text.text.take(16)
     val formatted = StringBuilder()

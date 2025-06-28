@@ -1,5 +1,6 @@
 package com.example.projetmobile.ui.product.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -7,7 +8,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -42,21 +42,17 @@ fun EditProductScreen(
         var description by remember { mutableStateOf(currentProduct.productDescription ?: "") }
         var category by remember { mutableStateOf(currentProduct.productCategory ?: "") }
 
-        val categories = listOf(
-            "Collier", "Bracelet", "Bague", "Boucles d’oreilles", "Montre", "Parure", "Cheville"
-        )
+        val categories = listOf("Collier", "Bracelet", "Bague", "Boucles d’oreilles", "Montre")
 
         Scaffold(
             topBar = {
-                Column {
-                    AppMenu(
-                        navController = navController,
-                        authViewModel = authViewModel,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
+                AppMenu(
+                    navController = navController,
+                    authViewModel = authViewModel,
+                    modifier = Modifier.fillMaxWidth()
+                )
             },
-            containerColor = Color(0xFFE1F5FE) // fond harmonisé
+            containerColor = Color(0xFFE1F5FE)
         ) { padding ->
             Column(
                 modifier = Modifier
@@ -108,16 +104,32 @@ fun EditProductScreen(
                         readOnly = true,
                         label = { Text("Catégorie") },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                        modifier = Modifier.menuAnchor().fillMaxWidth()
+                        modifier = Modifier
+                            .menuAnchor()
+                            .fillMaxWidth()
                     )
-                    ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                        categories.forEach {
+                    ExposedDropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false },
+                        modifier = Modifier.background(Color(0xFFE1F5FE))
+                    ) {
+                        categories.forEach { cat ->
                             DropdownMenuItem(
-                                text = { Text(it) },
+                                text = {
+                                    Text(
+                                        text = cat,
+                                        color = if (cat == category) Color.White else Color.Black
+                                    )
+                                },
                                 onClick = {
-                                    category = it
+                                    category = cat
                                     expanded = false
-                                }
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(
+                                        if (cat == category) Color(0xFF0288D1) else Color.Transparent
+                                    )
                             )
                         }
                     }
@@ -125,9 +137,9 @@ fun EditProductScreen(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                Row(
+                Column(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Button(
                         onClick = {
@@ -147,7 +159,8 @@ fun EditProductScreen(
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF0288D1),
                             contentColor = Color.White
-                        )
+                        ),
+                        modifier = Modifier.fillMaxWidth()
                     ) {
                         Text("Enregistrer")
                     }
@@ -157,12 +170,11 @@ fun EditProductScreen(
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFFD32F2F),
                             contentColor = Color.White
-                        )
+                        ),
+                        modifier = Modifier.fillMaxWidth()
                     ) {
                         Text("Annuler")
                     }
-
-
                 }
             }
         }
